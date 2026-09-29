@@ -1,8 +1,8 @@
 
 <h2 align="center">
-  A Roblox script built from the ground up for your precise needs!
+  HackSense Prison Life
   <br/>
-  Rise up to the top while remaining completely untouchable.
+  A lazy vape fork made for prison life.
 </h2>
 
 ## Contacts
@@ -24,12 +24,12 @@ Half of the time its usually the scripting utility at fault, please make sure th
 3. Maintaining the same behavior across all usages of said functions.
 ### User Issues
 If its not the supposed utility at fault, please try some troubleshooting steps.
-1. Deleting the newvape folder (WITH THE GAME CLOSED).
-2. Making sure you have connection to [the main loadstring.](https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/refs/heads/main/NewMainScript.lua)
+1. Deleting the hacksense folder (WITH THE GAME CLOSED).
+2. Making sure you have connection to the main loadstring.
 3. Ensuring no external script is conflicting with vape.
 
 ## Developers & Credits
-[7GrandDad](https://github.com/7GrandDadPGN) - Lead maintainer of the project - vaperoblox on Discord
+[7GrandDad](https://github.com/7GrandDadPGN) - Lead maintainer of the main project - vaperoblox on Discord
 <br/>
 [rce-incorporated](https://github.com/rce-incorporated/Fiu) - Luau bytecode disassembly with modifications
 <br/>
