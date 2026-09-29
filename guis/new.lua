@@ -848,7 +848,7 @@ function vape:LoadGUI()
 	scarcitybanner.FontFace = uipallet.Font
 	scarcitybanner.Position = UDim2.fromScale(0, 0.97)
 	scarcitybanner.Size = UDim2.fromScale(1, 0.018)
-	scarcitybanner.Text = 'All update logs and game support are found in the discord, click the discord icon to join.'
+	scarcitybanner.Text = 'Welcome to HackSense V2.'
 	scarcitybanner.TextColor3 = Color3.new(1, 1, 1)
 	scarcitybanner.TextScaled = true
 	scarcitybanner.TextStrokeTransparency = 0.5
@@ -2250,6 +2250,7 @@ function vape:LoadGUI()
 	                table.remove(vape.HeldKeybinds, index)
 	        end
 	end))
+	
 end
 
 function vape:Remove(obj)
