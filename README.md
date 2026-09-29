@@ -14,7 +14,7 @@
 1. Download the specific scripting utility of your choice.
 2. Execute the provided loadstring below.
 ```luau
-we need 2 add our load string here
+loadstring(game:HttpGet('https://raw.githubusercontent.com/mqiz/HSPrisonLife/main/NewMainScript.lua'))()
 ```
 
 ## Possible Issues
