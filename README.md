@@ -1,10 +1,4 @@
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./README/vapelogo-white.png">
-    <source media="(prefers-color-scheme: light)" srcset="./README/vapelogo-dark.png">
-    <img alt="vape logo" src="./README/vapelogo.png">
-  </picture>
-</p>
+
 <h2 align="center">
   A Roblox script built from the ground up for your precise needs!
   <br/>
@@ -12,15 +6,15 @@
 </h2>
 
 ## Contacts
-[Discord](https://discord.gg/VZEQJxMSnG)
+[Discord](@0.rusty)
 <br/>
-[Youtube](https://youtube.com/c/7GrandDadVape)
+[Youtube](https://youtube.com/0.rustyidk)
 
 ## Usage
 1. Download the specific scripting utility of your choice.
 2. Execute the provided loadstring below.
 ```luau
-loadstring(game:HttpGet("https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/main/NewMainScript.lua", true))()
+we need 2 add our load string here
 ```
 
 ## Possible Issues
@@ -42,3 +36,5 @@ If its not the supposed utility at fault, please try some troubleshooting steps.
 [Egor Skriptunoff, boatbomber, and howmanysmall](https://devforum.roblox.com/t/open-source-hashlib/416732/1) - HashLibrary for Luau
 <br/>
 [Vernumerator](https://devforum.roblox.com/t/predict-projectile-ballistics-including-gravity-and-motion/1842434) - Projectile prediction for Roblox
+<br/>
+[Rusty](https://github.com/rustycreations) - For creation and maintaining of HackSensePrisonLife
