@@ -6,7 +6,7 @@
 </h2>
 
 ## Contacts
-[Discord @0.rusty](@0.rusty)
+[Discord](https://discord.gg/6avNTxtRG8)
 <br/>
 [Youtube](https://youtube.com/0.rustyidk)
 
