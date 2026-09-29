@@ -142,10 +142,19 @@ bar.Parent = bkg
 local barcorner = Instance.new('UICorner')
 barcorner.CornerRadius = UDim.new(0, 8)
 barcorner.Parent = bar
-Radar:CreateColorSlider({
+local __hsTheme145 = Radar:CreateColorSlider({
 	Name = 'Bar Color',
 	Function = function(hue, sat, val)
 		bar.BackgroundColor3 = Color3.fromHSV(hue, sat, val)
+	end
+})
+
+Radar:CreateButton({
+	Name = 'Match theme color',
+	Tooltip = 'Changes the color to match the current client theme color',
+	Function = function()
+		PlayerColor:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+		__hsTheme145:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
 	end
 })
 Radar:CreateToggle({

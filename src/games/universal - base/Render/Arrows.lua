@@ -109,6 +109,14 @@ Color = Arrows:CreateColorSlider({
 		end
 	end,
 })
+
+Arrows:CreateButton({
+	Name = 'Match theme color',
+	Tooltip = 'Changes the color to match the current client theme color',
+	Function = function()
+		Color:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+	end
+})
 Teammates = Arrows:CreateToggle({
 	Name = 'Priority Only',
 	Function = function()

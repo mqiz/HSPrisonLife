@@ -74,6 +74,14 @@ Color = Waypoints:CreateColorSlider({
 		end
 	end
 })
+
+Waypoints:CreateButton({
+	Name = 'Match theme color',
+	Tooltip = 'Changes the color to match the current client theme color',
+	Function = function()
+		Color:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+	end
+})
 Scale = Waypoints:CreateSlider({
 	Name = 'Scale',
 	Function = function()

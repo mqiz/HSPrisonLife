@@ -443,6 +443,14 @@ Color = ESP:CreateColorSlider({
 		end
 	end
 })
+
+ESP:CreateButton({
+	Name = 'Match theme color',
+	Tooltip = 'Changes the color to match the current client theme color',
+	Function = function()
+		Color:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+	end
+})
 BoundingBox = ESP:CreateToggle({
 	Name = 'Bounding Box',
 	Function = function()

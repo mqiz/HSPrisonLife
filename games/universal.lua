@@ -2517,6 +2517,8 @@ run(function()
 	local paused = false
 	local avoidAccum = 0
 	local avoidUp = true
+	local upTp = false
+	local surfaceCf
 	local ghostModel
 	local ghostParts
 	local ghostOffsets
@@ -2651,6 +2653,8 @@ run(function()
 	                if callback then
 	                        avoidAccum = 0
 	                        avoidUp = true
+	                        upTp = false
+	                        surfaceCf = nil
 	                        paused = kickBusy()
 	                        oldcf = nil
 	                        physCf = nil
@@ -2681,6 +2685,8 @@ run(function()
 	                                        paused = kickNow
 	                                        avoidAccum = 0
 	                                        avoidUp = true
+	                                        upTp = false
+	                                        surfaceCf = nil
 	
 	                                        if paused then
 	                                                if entitylib.isAlive and oldcf then
@@ -2710,13 +2716,26 @@ run(function()
 	                                        if avoidAccum >= 1 then
 	                                                avoidAccum -= math.floor(avoidAccum)
 	                                                avoidUp = not avoidUp
+	
+	                                                if avoidUp then
+	                                                        upTp = true
+	                                                else
+	                                                        surfaceCf = root.CFrame
+	                                                        physCf = (surfaceCf - Vector3.new(0, bury, 0)) * CFrame.Angles(math.rad(isR15 and 180 or 90), 0, 0)
+	                                                end
 	                                        end
 	
 	                                        if avoidUp then
+	                                                if upTp then
+	                                                        upTp = false
+	
+	                                                        if surfaceCf then
+	                                                                root.CFrame = surfaceCf
+	                                                        end
+	                                                end
+	
 	                                                oldcf = root.CFrame
-	                                                physCf = root.CFrame
-	                                        elseif oldcf then
-	                                                physCf = (oldcf - Vector3.new(0, bury, 0)) * CFrame.Angles(math.rad(isR15 and 180 or 90), 0, 0)
+	                                        elseif physCf then
 	                                                root.CFrame = physCf
 	                                        end
 	
@@ -4146,6 +4165,14 @@ run(function()
 			end
 		end,
 	})
+	
+	Arrows:CreateButton({
+		Name = 'Match theme color',
+		Tooltip = 'Changes the color to match the current client theme color',
+		Function = function()
+			Color:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+		end
+	})
 	Teammates = Arrows:CreateToggle({
 		Name = 'Priority Only',
 		Function = function()
@@ -4172,6 +4199,7 @@ run(function()
 		Darker = true,
 		Visible = false
 	})
+	
 end)
 
 run(function()
@@ -4328,6 +4356,15 @@ run(function()
 		end,
 		Darker = true
 	})
+	
+	Chams:CreateButton({
+		Name = 'Match theme color',
+		Tooltip = 'Changes the color to match the current client theme color',
+		Function = function()
+			FillColor:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+			OutlineColor:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+		end
+	})
 	FillTransparency = Chams:CreateSlider({
 		Name = 'Transparency',
 		Min = 0,
@@ -4385,6 +4422,7 @@ run(function()
 		Default = true,
 		Tooltip = 'Hides teammates & non targetable entities'
 	})
+	
 end)
 
 run(function()
@@ -4833,6 +4871,14 @@ run(function()
 			end
 		end
 	})
+	
+	ESP:CreateButton({
+		Name = 'Match theme color',
+		Tooltip = 'Changes the color to match the current client theme color',
+		Function = function()
+			Color:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+		end
+	})
 	BoundingBox = ESP:CreateToggle({
 		Name = 'Bounding Box',
 		Function = function()
@@ -4923,6 +4969,7 @@ run(function()
 		Darker = true,
 		Visible = false
 	})
+	
 end)
 
 run(function()
@@ -5228,6 +5275,15 @@ run(function()
 			end
 		end
 	})
+	
+	GamingChair:CreateButton({
+		Name = 'Match theme color',
+		Tooltip = 'Changes the color to match the current client theme color',
+		Function = function()
+			Color:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+		end
+	})
+	
 end)
 
 run(function()
@@ -5580,6 +5636,14 @@ run(function()
 			end
 		end
 	})
+	
+	NameTags:CreateButton({
+		Name = 'Match theme color',
+		Tooltip = 'Changes the color to match the current client theme color',
+		Function = function()
+			Color:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+		end
+	})
 	Scale = NameTags:CreateSlider({
 		Name = 'Scale',
 		Function = function()
@@ -5682,6 +5746,7 @@ run(function()
 		Darker = true,
 		Visible = false
 	})
+	
 end)
 
 run(function()
@@ -5951,10 +6016,19 @@ run(function()
 	local barcorner = Instance.new('UICorner')
 	barcorner.CornerRadius = UDim.new(0, 8)
 	barcorner.Parent = bar
-	Radar:CreateColorSlider({
+	local __hsTheme145 = Radar:CreateColorSlider({
 		Name = 'Bar Color',
 		Function = function(hue, sat, val)
 			bar.BackgroundColor3 = Color3.fromHSV(hue, sat, val)
+		end
+	})
+	
+	Radar:CreateButton({
+		Name = 'Match theme color',
+		Tooltip = 'Changes the color to match the current client theme color',
+		Function = function()
+			PlayerColor:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+			__hsTheme145:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
 		end
 	})
 	Radar:CreateToggle({
@@ -5978,6 +6052,7 @@ run(function()
 		Name = 'Clamp Radar',
 		Default = true
 	})
+	
 end)
 
 run(function()
@@ -6044,6 +6119,14 @@ run(function()
 			end
 		end
 	})
+	
+	Search:CreateButton({
+		Name = 'Match theme color',
+		Tooltip = 'Changes the color to match the current client theme color',
+		Function = function()
+			Color:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+		end
+	})
 	FillTransparency = Search:CreateSlider({
 		Name = 'Transparency',
 		Min = 0,
@@ -6055,6 +6138,7 @@ run(function()
 		end,
 		Decimal = 10
 	})
+	
 end)
 
 run(function()
@@ -6147,7 +6231,7 @@ run(function()
 		Tooltip = 'Name of entry to hide.',
 		Color = Color3.fromRGB(250, 50, 56)
 	})
-	SessionInfo:CreateColorSlider({
+	local __hsTheme90 = SessionInfo:CreateColorSlider({
 		Name = 'Background Color',
 		DefaultValue = 0,
 		DefaultOpacity = 0.5,
@@ -6164,6 +6248,15 @@ run(function()
 		end,
 		Darker = true,
 		Visible = false
+	})
+	
+	SessionInfo:CreateButton({
+		Name = 'Match theme color',
+		Tooltip = 'Changes the color to match the current client theme color',
+		Function = function()
+			__hsTheme90:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+			BorderColor:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+		end
 	})
 	TextSize = SessionInfo:CreateSlider({
 		Name = 'Text Size',
@@ -6254,6 +6347,7 @@ run(function()
 	vape.Libraries.sessioninfo:AddItem('Time Played', os.clock(), function(value)
 		return os.date('!%X', math.floor(os.clock() - value))
 	end)
+	
 end)
 
 run(function()
@@ -6290,7 +6384,7 @@ run(function()
 			end
 		end
 	})
-	Spotify:CreateColorSlider({
+	local __hsTheme34 = Spotify:CreateColorSlider({
 		Name = 'Background Color',
 		DefaultValue = 0,
 		DefaultOpacity = 0.5,
@@ -6307,6 +6401,15 @@ run(function()
 		end,
 		Darker = true,
 		Visible = false
+	})
+	
+	Spotify:CreateButton({
+		Name = 'Match theme color',
+		Tooltip = 'Changes the color to match the current client theme color',
+		Function = function()
+			__hsTheme34:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+			BorderColor:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+		end
 	})
 	Spotify:CreateToggle({
 		Name = 'Border',
@@ -6872,6 +6975,7 @@ run(function()
 			until false
 		end
 	end
+	
 end)
 
 run(function()
@@ -7023,6 +7127,14 @@ run(function()
 			end
 		end
 	})
+	
+	Tracers:CreateButton({
+		Name = 'Match theme color',
+		Tooltip = 'Changes the color to match the current client theme color',
+		Function = function()
+			Color:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+		end
+	})
 	Transparency = Tracers:CreateSlider({
 		Name = 'Transparency',
 		Min = 0,
@@ -7073,6 +7185,7 @@ run(function()
 		Default = true,
 		Tooltip = 'Hides teammates & non targetable entities'
 	})
+	
 end)
 
 run(function()
@@ -7152,6 +7265,14 @@ run(function()
 			end
 		end
 	})
+	
+	Waypoints:CreateButton({
+		Name = 'Match theme color',
+		Tooltip = 'Changes the color to match the current client theme color',
+		Function = function()
+			Color:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+		end
+	})
 	Scale = Waypoints:CreateSlider({
 		Name = 'Scale',
 		Function = function()
@@ -7191,6 +7312,7 @@ run(function()
 		Max = 1,
 		Decimal = 10
 	})
+	
 end)
 
 run(function()

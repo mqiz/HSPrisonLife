@@ -87,7 +87,7 @@ Hide = SessionInfo:CreateTextList({
 	Tooltip = 'Name of entry to hide.',
 	Color = Color3.fromRGB(250, 50, 56)
 })
-SessionInfo:CreateColorSlider({
+local __hsTheme90 = SessionInfo:CreateColorSlider({
 	Name = 'Background Color',
 	DefaultValue = 0,
 	DefaultOpacity = 0.5,
@@ -104,6 +104,15 @@ BorderColor = SessionInfo:CreateColorSlider({
 	end,
 	Darker = true,
 	Visible = false
+})
+
+SessionInfo:CreateButton({
+	Name = 'Match theme color',
+	Tooltip = 'Changes the color to match the current client theme color',
+	Function = function()
+		__hsTheme90:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+		BorderColor:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+	end
 })
 TextSize = SessionInfo:CreateSlider({
 	Name = 'Text Size',

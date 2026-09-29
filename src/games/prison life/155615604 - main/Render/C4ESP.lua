@@ -67,6 +67,15 @@ OutlineColor = C4ESP:CreateColorSlider({
 		end
 	end
 })
+
+C4ESP:CreateButton({
+	Name = 'Match theme color',
+	Tooltip = 'Changes the color to match the current client theme color',
+	Function = function()
+		FillColor:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+		OutlineColor:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+	end
+})
 FillTransparency = C4ESP:CreateSlider({
 	Name = 'Transparency',
 	Min = 0,

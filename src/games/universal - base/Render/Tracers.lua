@@ -146,6 +146,14 @@ Color = Tracers:CreateColorSlider({
 		end
 	end
 })
+
+Tracers:CreateButton({
+	Name = 'Match theme color',
+	Tooltip = 'Changes the color to match the current client theme color',
+	Function = function()
+		Color:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+	end
+})
 Transparency = Tracers:CreateSlider({
 	Name = 'Transparency',
 	Min = 0,

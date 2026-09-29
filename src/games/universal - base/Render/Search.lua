@@ -61,6 +61,14 @@ Color = Search:CreateColorSlider({
 		end
 	end
 })
+
+Search:CreateButton({
+	Name = 'Match theme color',
+	Tooltip = 'Changes the color to match the current client theme color',
+	Function = function()
+		Color:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+	end
+})
 FillTransparency = Search:CreateSlider({
 	Name = 'Transparency',
 	Min = 0,

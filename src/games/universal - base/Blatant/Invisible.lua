@@ -7,6 +7,8 @@ local animtrack
 local paused = false
 local avoidAccum = 0
 local avoidUp = true
+local upTp = false
+local surfaceCf
 local ghostModel
 local ghostParts
 local ghostOffsets
@@ -141,6 +143,8 @@ Invisible = vape.Categories.Blatant:CreateModule({
                 if callback then
                         avoidAccum = 0
                         avoidUp = true
+                        upTp = false
+                        surfaceCf = nil
                         paused = kickBusy()
                         oldcf = nil
                         physCf = nil
@@ -171,6 +175,8 @@ Invisible = vape.Categories.Blatant:CreateModule({
                                         paused = kickNow
                                         avoidAccum = 0
                                         avoidUp = true
+                                        upTp = false
+                                        surfaceCf = nil
 
                                         if paused then
                                                 if entitylib.isAlive and oldcf then
@@ -200,13 +206,26 @@ Invisible = vape.Categories.Blatant:CreateModule({
                                         if avoidAccum >= 1 then
                                                 avoidAccum -= math.floor(avoidAccum)
                                                 avoidUp = not avoidUp
+
+                                                if avoidUp then
+                                                        upTp = true
+                                                else
+                                                        surfaceCf = root.CFrame
+                                                        physCf = (surfaceCf - Vector3.new(0, bury, 0)) * CFrame.Angles(math.rad(isR15 and 180 or 90), 0, 0)
+                                                end
                                         end
 
                                         if avoidUp then
+                                                if upTp then
+                                                        upTp = false
+
+                                                        if surfaceCf then
+                                                                root.CFrame = surfaceCf
+                                                        end
+                                                end
+
                                                 oldcf = root.CFrame
-                                                physCf = root.CFrame
-                                        elseif oldcf then
-                                                physCf = (oldcf - Vector3.new(0, bury, 0)) * CFrame.Angles(math.rad(isR15 and 180 or 90), 0, 0)
+                                        elseif physCf then
                                                 root.CFrame = physCf
                                         end
 

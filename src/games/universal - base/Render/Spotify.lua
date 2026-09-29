@@ -31,7 +31,7 @@ Spotify = vape:CreateOverlay({
 		end
 	end
 })
-Spotify:CreateColorSlider({
+local __hsTheme34 = Spotify:CreateColorSlider({
 	Name = 'Background Color',
 	DefaultValue = 0,
 	DefaultOpacity = 0.5,
@@ -48,6 +48,15 @@ BorderColor = Spotify:CreateColorSlider({
 	end,
 	Darker = true,
 	Visible = false
+})
+
+Spotify:CreateButton({
+	Name = 'Match theme color',
+	Tooltip = 'Changes the color to match the current client theme color',
+	Function = function()
+		__hsTheme34:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+		BorderColor:SetValue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+	end
 })
 Spotify:CreateToggle({
 	Name = 'Border',

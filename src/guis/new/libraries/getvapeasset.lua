@@ -104,8 +104,16 @@ do
                 return (callback or readfile)(path)
         end
 
-        getvapeasset = not inputService.TouchEnabled and getcustomasset and function(path)
-                return downloadFile(path, getcustomasset)
+        getvapeasset = getcustomasset and function(path)
+                local success, asset = pcall(function()
+                        return downloadFile(path, getcustomasset)
+                end)
+
+                if success and asset then
+                        return asset
+                end
+
+                return vapeAssets[path] or ''
         end or function(path)
                 return vapeAssets[path] or ''
         end
