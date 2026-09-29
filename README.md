@@ -24,7 +24,7 @@ Half of the time its usually the scripting utility at fault, please make sure th
 3. Maintaining the same behavior across all usages of said functions.
 ### User Issues
 If its not the supposed utility at fault, please try some troubleshooting steps.
-1. Deleting the hacksense folder (WITH THE GAME CLOSED).
+1. Deleting the hacksensev2 folder (WITH THE GAME CLOSED).
 2. Making sure you have connection to the main loadstring.
 3. Ensuring no external script is conflicting with vape.
 
