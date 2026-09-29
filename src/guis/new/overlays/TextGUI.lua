@@ -227,8 +227,8 @@ Logo.BackgroundTransparency = 1
 Logo.BorderSizePixel = 0
 Logo.Image = getvapeasset('hacksensev2/assets/new/vapelogo.png')
 Logo.Name = 'Logo'
-Logo.Position = UDim2.new(1, -102, 0, 3)
-Logo.Size = UDim2.fromOffset(41, 24)
+Logo.Position = UDim2.new(1, -170, 0, 3)
+Logo.Size = UDim2.fromOffset(130, 24)
 Logo.Visible = false
 Logo.Parent = TextGUI.Children
 local LogoV2 = Instance.new('ImageLabel')
@@ -322,7 +322,7 @@ function vape:UpdateTextGUI(afterload)
                 local isRight = TextGUI.Children.AbsolutePosition.X > (gui.AbsoluteSize.X / 2)
 
                 Logo.Visible = Watermark.Enabled
-                Logo.Position = isRight and UDim2.new(1 / Scale.Scale, -113, 0, 6) or UDim2.fromOffset(0, 6)
+                Logo.Position = isRight and UDim2.new(1 / Scale.Scale, -170, 0, 6) or UDim2.fromOffset(0, 6)
                 LogoShadow.Visible = Shadow.Enabled
                 LabelCustom.Text = CustomTextBox.Value
                 LabelCustom.FontFace = CustomTextFont.Value
@@ -498,10 +498,7 @@ function TextGUI:UpdateColor(hue, sat, val, default)
                 ColorSequenceKeypoint.new(0, Color3.fromHSV(hue, sat, val)),
                 ColorSequenceKeypoint.new(1, Gradient.Enabled and Color3.fromHSV(vape:Color((hue - 0.075) % 1)) or Color3.fromHSV(hue, sat, val))
         })
-        LogoGradient2.Color = Gradient.Enabled and GradientV2.Enabled and LogoGradient.Color or ColorSequence.new({
-                ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)),
-                ColorSequenceKeypoint.new(1, Color3.new(1, 1, 1))
-        })
+        LogoGradient2.Color = LogoGradient.Color
         LabelCustom.TextColor3 = CustomTextColor.Enabled and Color3.fromHSV(CustomTextColorSlider.Hue, CustomTextColorSlider.Sat, CustomTextColorSlider.Value) or LogoGradient.Color.Keypoints[2].Value
 
         local isCustom = ColorMode.Value == 'Custom color' and Color3.fromHSV(ColorSlider.Hue, ColorSlider.Sat, ColorSlider.Value) or nil
