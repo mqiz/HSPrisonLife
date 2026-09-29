@@ -218,9 +218,6 @@ CustomTextColorSlider = TextGUI:CreateColorSlider({
 })
 
 
---[[
-        Text GUI Objects
-]]
 
 Scale = Instance.new('UIScale')
 Scale.Parent = TextGUI.Children
@@ -230,8 +227,8 @@ Logo.BackgroundTransparency = 1
 Logo.BorderSizePixel = 0
 Logo.Image = getvapeasset('hacksensev2/assets/new/vapelogo.png')
 Logo.Name = 'Logo'
-Logo.Position = UDim2.new(1, -134, 0, 3)
-Logo.Size = UDim2.fromOffset(130, 24)
+Logo.Position = UDim2.new(1, -45, 0, 3)
+Logo.Size = UDim2.fromOffset(41, 24)
 Logo.Visible = false
 Logo.Parent = TextGUI.Children
 local LogoShadow = Logo:Clone()

@@ -1,31 +1,31 @@
 local vape = {
-	ActiveBinds = {},
-	Categories = {},
-	GUIColor = {
-		Hue = 0.46,
-		Sat = 0.96,
-		Value = 0.52
-	},
-	HeldKeybinds = {},
-	Loaded = false,
-	Libraries = {},
-	Modules = {},
-	Place = game.PlaceId,
-	Profile = 'default',
-	RainbowSliders = {},
-	Settings = {},
-	SettingToggleNotifications = {},
-	ThreadFix = setthreadidentity and true or false,
-	ToggleNotifications = {},
-	Version = '4.22',
-	Windows = {}
+        ActiveBinds = {},
+        Categories = {},
+        GUIColor = {
+                Hue = 0.46,
+                Sat = 0.96,
+                Value = 0.52
+        },
+        HeldKeybinds = {},
+        Loaded = false,
+        Libraries = {},
+        Modules = {},
+        Place = game.PlaceId,
+        Profile = 'default',
+        RainbowSliders = {},
+        Settings = {},
+        SettingToggleNotifications = {},
+        ThreadFix = setthreadidentity and true or false,
+        ToggleNotifications = {},
+        Version = '4.22',
+        Windows = {}
 }
 
 local run = function(func)
-	func()
+        func()
 end
 local cloneref = cloneref or function(obj)
-	return obj
+        return obj
 end
 local tweenService = cloneref(game:GetService('TweenService'))
 local inputService = cloneref(game:GetService('UserInputService'))
@@ -49,20 +49,21 @@ local scale = {Scale = 1}
 local gui
 
 local isfile = isfile or function(file)
-	local success, data = pcall(function()
-		return readfile(file)
-	end)
+        local success, data = pcall(function()
+                return readfile(file)
+        end)
 
-	return success and data ~= nil and data ~= ''
+        return success and data ~= nil and data ~= ''
 end
 
 local function loadJson(path)
-	local success, data = pcall(function()
-		return httpService:JSONDecode(readfile(path))
-	end)
+        local success, data = pcall(function()
+                return httpService:JSONDecode(readfile(path))
+        end)
 
-	return success and type(data) == 'table' and data or nil
+        return success and type(data) == 'table' and data or nil
 end
+
 
 local color = {}
 local uipallet = {}
@@ -296,509 +297,508 @@ vape.Libraries = {
 	tween = tween,
 	uipallet = uipallet,
 }
-
 local function addBlur(parent, notif, old)
-	local blur
-	if old then
-		blur = Instance.new('ImageLabel')
-		blur.Name = 'Blur'
-		blur.Size = UDim2.new(1, 89, 1, 52)
-		blur.Position = UDim2.fromOffset(-48, -31)
-		blur.BackgroundTransparency = 1
-		blur.Image = getvapeasset('hacksensev2/assets/new/'..(notif and 'blurnoti' or 'blur')..'.png')
-		blur.ScaleType = Enum.ScaleType.Slice
-		blur.SliceCenter = Rect.new(52, 31, 261, 502)
-		blur.Parent = parent
-	else
-		blur = Instance.new('UIShadow')
-		blur.BlurRadius = UDim.new(0, 13)
-		blur.Transparency = 0.25
-		blur.Parent = parent
-	end
+        local blur
+        if old then
+                blur = Instance.new('ImageLabel')
+                blur.Name = 'Blur'
+                blur.Size = UDim2.new(1, 89, 1, 52)
+                blur.Position = UDim2.fromOffset(-48, -31)
+                blur.BackgroundTransparency = 1
+                blur.Image = getvapeasset('hacksensev2/assets/new/'..(notif and 'blurnoti' or 'blur')..'.png')
+                blur.ScaleType = Enum.ScaleType.Slice
+                blur.SliceCenter = Rect.new(52, 31, 261, 502)
+                blur.Parent = parent
+        else
+                blur = Instance.new('UIShadow')
+                blur.BlurRadius = UDim.new(0, 13)
+                blur.Transparency = 0.25
+                blur.Parent = parent
+        end
 
-	return blur
+        return blur
 end
 
 local function addCorner(parent, radius)
-	local corner = Instance.new('UICorner')
-	corner.CornerRadius = radius or UDim.new(0, 5)
-	corner.Parent = parent
+        local corner = Instance.new('UICorner')
+        corner.CornerRadius = radius or UDim.new(0, 5)
+        corner.Parent = parent
 
-	return corner
+        return corner
 end
 
 local function addCloseButton(parent, mini, offset)
-	local close = Instance.new('ImageButton')
-	close.AutoButtonColor = false
-	close.BackgroundColor3 = Color3.new(1, 1, 1)
-	close.BackgroundTransparency = 1
-	close.Image = getvapeasset('hacksensev2/assets/new/'..(mini and 'closemini' or 'close')..'.png')
-	close.ImageColor3 = color.Light(uipallet.Text, 0.2)
-	close.ImageTransparency = 0.5
-	close.Name = 'Close'
-	close.Position = offset or (mini and UDim2.new(1, -28, 0, 11) or UDim2.new(1, -35, 0, 9))
-	close.Size = mini and UDim2.fromOffset(20, 20) or UDim2.fromOffset(24, 24)
-	close.Parent = parent
-	addCorner(close, UDim.new(1, 0))
+        local close = Instance.new('ImageButton')
+        close.AutoButtonColor = false
+        close.BackgroundColor3 = Color3.new(1, 1, 1)
+        close.BackgroundTransparency = 1
+        close.Image = getvapeasset('hacksensev2/assets/new/'..(mini and 'closemini' or 'close')..'.png')
+        close.ImageColor3 = color.Light(uipallet.Text, 0.2)
+        close.ImageTransparency = 0.5
+        close.Name = 'Close'
+        close.Position = offset or (mini and UDim2.new(1, -28, 0, 11) or UDim2.new(1, -35, 0, 9))
+        close.Size = mini and UDim2.fromOffset(20, 20) or UDim2.fromOffset(24, 24)
+        close.Parent = parent
+        addCorner(close, UDim.new(1, 0))
 
-	close.MouseEnter:Connect(function()
-		close.ImageTransparency = 0.3
-		tween:Tween(close, uipallet.Tween, {
-			BackgroundTransparency = 0.6
-		})
-	end)
+        close.MouseEnter:Connect(function()
+                close.ImageTransparency = 0.3
+                tween:Tween(close, uipallet.Tween, {
+                        BackgroundTransparency = 0.6
+                })
+        end)
 
-	close.MouseLeave:Connect(function()
-		close.ImageTransparency = 0.5
-		tween:Tween(close, uipallet.Tween, {
-			BackgroundTransparency = 1
-		})
-	end)
+        close.MouseLeave:Connect(function()
+                close.ImageTransparency = 0.5
+                tween:Tween(close, uipallet.Tween, {
+                        BackgroundTransparency = 1
+                })
+        end)
 
-	return close
+        return close
 end
 
 local function addDragHandler(gui, window)
-	gui.InputBegan:Connect(function(input)
-		if window and not window.Visible then return end
+        gui.InputBegan:Connect(function(input)
+                if window and not window.Visible then return end
 
-		if
-			(input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch)
-			and (input.Position.Y - gui.AbsolutePosition.Y < 40 or window)
-		then
-			local dragPosition = Vector2.new(
-				gui.AbsolutePosition.X - input.Position.X,
-				gui.AbsolutePosition.Y - input.Position.Y + guiService:GetGuiInset().Y
-			) / scale.Scale
+                if
+                        (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch)
+                        and (input.Position.Y - gui.AbsolutePosition.Y < 40 or window)
+                then
+                        local dragPosition = Vector2.new(
+                                gui.AbsolutePosition.X - input.Position.X,
+                                gui.AbsolutePosition.Y - input.Position.Y + guiService:GetGuiInset().Y
+                        ) / scale.Scale
 
-			local releaseConnection
-			local moveConnection = inputService.InputChanged:Connect(function(newInput)
-				if newInput.UserInputType == (input.UserInputType == Enum.UserInputType.MouseButton1 and Enum.UserInputType.MouseMovement or Enum.UserInputType.Touch) then
-					local position = newInput.Position
-					if inputService:IsKeyDown(Enum.KeyCode.LeftShift) then
-						dragPosition = (dragPosition // 3) * 3
-						position = (position // 3) * 3
-					end
+                        local releaseConnection
+                        local moveConnection = inputService.InputChanged:Connect(function(newInput)
+                                if newInput.UserInputType == (input.UserInputType == Enum.UserInputType.MouseButton1 and Enum.UserInputType.MouseMovement or Enum.UserInputType.Touch) then
+                                        local position = newInput.Position
+                                        if inputService:IsKeyDown(Enum.KeyCode.LeftShift) then
+                                                dragPosition = (dragPosition // 3) * 3
+                                                position = (position // 3) * 3
+                                        end
 
-					gui.Position = UDim2.fromOffset((position.X / scale.Scale) + dragPosition.X, (position.Y / scale.Scale) + dragPosition.Y)
-				end
-			end)
+                                        gui.Position = UDim2.fromOffset((position.X / scale.Scale) + dragPosition.X, (position.Y / scale.Scale) + dragPosition.Y)
+                                end
+                        end)
 
-			releaseConnection = input.Changed:Connect(function()
-				if input.UserInputState == Enum.UserInputState.End then
-					moveConnection:Disconnect()
-					releaseConnection:Disconnect()
-				end
-			end)
-		end
-	end)
+                        releaseConnection = input.Changed:Connect(function()
+                                if input.UserInputState == Enum.UserInputState.End then
+                                        moveConnection:Disconnect()
+                                        releaseConnection:Disconnect()
+                                end
+                        end)
+                end
+        end)
 end
 
 local function addMaid(obj)
-	obj.Connections = {}
+        obj.Connections = {}
 
-	function obj:Clean(callback)
-		if typeof(callback) == 'Instance' then
-			table.insert(self.Connections, {
-				Disconnect = function()
-					callback:ClearAllChildren()
-					callback:Destroy()
-				end
-			})
-		elseif type(callback) == 'thread' then
-			table.insert(self.Connections, {
-				Disconnect = function()
-					if coroutine.status(callback) ~= 'dead' then
-						task.cancel(callback)
-					end
-				end
-			})
-		elseif type(callback) == 'function' then
-			table.insert(self.Connections, {
-				Disconnect = callback
-			})
-		else
-			table.insert(self.Connections, callback)
-		end
-	end
+        function obj:Clean(callback)
+                if typeof(callback) == 'Instance' then
+                        table.insert(self.Connections, {
+                                Disconnect = function()
+                                        callback:ClearAllChildren()
+                                        callback:Destroy()
+                                end
+                        })
+                elseif type(callback) == 'thread' then
+                        table.insert(self.Connections, {
+                                Disconnect = function()
+                                        if coroutine.status(callback) ~= 'dead' then
+                                                task.cancel(callback)
+                                        end
+                                end
+                        })
+                elseif type(callback) == 'function' then
+                        table.insert(self.Connections, {
+                                Disconnect = callback
+                        })
+                else
+                        table.insert(self.Connections, callback)
+                end
+        end
 end
 
 local function addTooltip(gui, text, customText, visCheck)
-	if not text then return end
+        if not text then return end
 
-	local function tooltipMoved(x, y)
-		if visCheck and visCheck() then
-			return
-		end
+        local function tooltipMoved(x, y)
+                if visCheck and visCheck() then
+                        return
+                end
 
-		local isRight = x + 16 + tooltip.Size.X.Offset > (scale.Scale * 1920)
-		tooltip.Position = UDim2.fromOffset(
-			(isRight and x - (tooltip.Size.X.Offset * scale.Scale) - 16 or x + 16) / scale.Scale,
-			((y + 11) - (tooltip.Size.Y.Offset / 2)) / scale.Scale
-		)
+                local isRight = x + 16 + tooltip.Size.X.Offset > (scale.Scale * 1920)
+                tooltip.Position = UDim2.fromOffset(
+                        (isRight and x - (tooltip.Size.X.Offset * scale.Scale) - 16 or x + 16) / scale.Scale,
+                        ((y + 11) - (tooltip.Size.Y.Offset / 2)) / scale.Scale
+                )
 
-		tooltip.Visible = toolblur.Enabled
-	end
+                tooltip.Visible = toolblur.Enabled
+        end
 
-	local function callback()
-		local newText = customText()
-		tooltip.Text = newText
-		local tooltipSize = getfontbounds(tooltip.ContentText, tooltip.TextSize, uipallet.Font)
-		tooltip.Size = UDim2.fromOffset(tooltipSize.X + 10, tooltipSize.Y + 10)
-	end
+        local function callback()
+                local newText = customText()
+                tooltip.Text = newText
+                local tooltipSize = getfontbounds(tooltip.ContentText, tooltip.TextSize, uipallet.Font)
+                tooltip.Size = UDim2.fromOffset(tooltipSize.X + 10, tooltipSize.Y + 10)
+        end
 
-	gui.MouseEnter:Connect(function(x, y)
-		if visCheck and visCheck() then
-			return
-		end
+        gui.MouseEnter:Connect(function(x, y)
+                if visCheck and visCheck() then
+                        return
+                end
 
-		tooltip.Text = text
-		local tooltipSize = getfontbounds(tooltip.ContentText, tooltip.TextSize, uipallet.Font)
-		tooltip.Size = UDim2.fromOffset(tooltipSize.X + 10, tooltipSize.Y + 10)
-		tooltipMoved(x, y)
+                tooltip.Text = text
+                local tooltipSize = getfontbounds(tooltip.ContentText, tooltip.TextSize, uipallet.Font)
+                tooltip.Size = UDim2.fromOffset(tooltipSize.X + 10, tooltipSize.Y + 10)
+                tooltipMoved(x, y)
 
-		if customText then
-			vape.CurrentTooltip = callback
-			callback()
-		end
-	end)
-	gui.MouseMoved:Connect(tooltipMoved)
-	gui.MouseLeave:Connect(function()
-		if visCheck and visCheck() then
-			return
-		end
+                if customText then
+                        vape.CurrentTooltip = callback
+                        callback()
+                end
+        end)
+        gui.MouseMoved:Connect(tooltipMoved)
+        gui.MouseLeave:Connect(function()
+                if visCheck and visCheck() then
+                        return
+                end
 
-		tooltip.Visible = false
-		vape.CurrentTooltip = nil
-	end)
+                tooltip.Visible = false
+                vape.CurrentTooltip = nil
+        end)
 end
 
 local function createSignal()
-	local signal = {
-		Connections = {}
-	}
+        local signal = {
+                Connections = {}
+        }
 
-	function signal:Connect(callback)
-		table.insert(self.Connections, callback)
+        function signal:Connect(callback)
+                table.insert(self.Connections, callback)
 
-		return {
-			Disconnect = function()
-				local index = table.find(signal.Connections, callback)
-				if index then
-					table.remove(signal.Connections, index)
-				end
-			end
-		}
-	end
+                return {
+                        Disconnect = function()
+                                local index = table.find(signal.Connections, callback)
+                                if index then
+                                        table.remove(signal.Connections, index)
+                                end
+                        end
+                }
+        end
 
-	function signal:Fire(...)
-		for _, callback in self.Connections do
-			task.spawn(callback, ...)
-		end
-	end
+        function signal:Fire(...)
+                for _, callback in self.Connections do
+                        task.spawn(callback, ...)
+                end
+        end
 
-	return signal
+        return signal
 end
 
 local function checkKeybinds(compare, target, key)
-	if type(target) == 'table' then
-		if table.find(target, key) then
-			for _, key in target do
-				if not table.find(compare, key) then
-					return false
-				end
-			end
+        if type(target) == 'table' then
+                if table.find(target, key) then
+                        for _, key in target do
+                                if not table.find(compare, key) then
+                                        return false
+                                end
+                        end
 
-			return true
-		end
-	end
+                        return true
+                end
+        end
 
-	return false
+        return false
 end
 
 local function getPlayerFromText(text)
-	if text ~= '' then
-		for _, plr in playersService:GetPlayers() do
-			if plr.Name:sub(1, #text):lower() == text:lower() then
-				return plr.Name
-			end
-		end
-	end
+        if text ~= '' then
+                for _, plr in playersService:GetPlayers() do
+                        if plr.Name:sub(1, #text):lower() == text:lower() then
+                                return plr.Name
+                        end
+                end
+        end
 end
 
 local function getTableSize(dict)
-	local size = 0
-	for _ in dict do
-		size += 1
-	end
+        local size = 0
+        for _ in dict do
+                size += 1
+        end
 
-	return size
+        return size
 end
 
 local function loopClean(obj)
-	for index, value in obj do
-		if type(value) == 'table' then
-			loopClean(value)
-		end
+        for index, value in obj do
+                if type(value) == 'table' then
+                        loopClean(value)
+                end
 
-		obj[index] = nil
-	end
+                obj[index] = nil
+        end
 end
 
 local function randomString()
-	local array = {}
-	for i = 1, math.random(10, 100) do
-		array[i] = string.char(math.random(32, 126))
-	end
+        local array = {}
+        for i = 1, math.random(10, 100) do
+                array[i] = string.char(math.random(32, 126))
+        end
 
-	return table.concat(array)
+        return table.concat(array)
 end
 
 local function removeTags(text)
-	text = text:gsub('<br%s*/>', '\n')
-	return text:gsub('<[^<>]->', '')
+        text = text:gsub('<br%s*/>', '\n')
+        return text:gsub('<[^<>]->', '')
 end
 
 function vape:BlurCheck()
-	if self.ThreadFix then
-		setthreadidentity(8)
-		runService:SetRobloxGuiFocused((clickgui.Visible or guiService:GetErrorType() ~= Enum.ConnectionError.OK) and self.Blur.Enabled)
-	end
+        if self.ThreadFix then
+                setthreadidentity(8)
+                runService:SetRobloxGuiFocused((clickgui.Visible or guiService:GetErrorType() ~= Enum.ConnectionError.OK) and self.Blur.Enabled)
+        end
 end
 
 function vape:CreateCategory(props)
-	return components.Category(props)
+        return components.Category(props)
 end
 
 function vape:CreateCategoryList(props)
-	return components.CategoryList(props)
+        return components.CategoryList(props)
 end
 
 function vape:CreateNotification(title, text, duration, type)
-	if not self.Notifications.Enabled then
-		return
-	end
+        if not self.Notifications.Enabled then
+                return
+        end
 
-	task.delay(0, function()
-		if self.ThreadFix then
-			setthreadidentity(8)
-		end
+        task.delay(0, function()
+                if self.ThreadFix then
+                        setthreadidentity(8)
+                end
 
-		local index = #notifications:GetChildren() + 1
-		local notification = Instance.new('ImageLabel')
-		notification.BackgroundTransparency = 1
-		notification.Position = UDim2.new(1, 0, 1, -(29 + (78 * index)))
-		notification.Image = getvapeasset('hacksensev2/assets/new/notification.png')
-		notification.ScaleType = Enum.ScaleType.Slice
-		notification.SliceCenter = Rect.new(7, 7, 9, 9)
-		notification.ZIndex = 5
-		notification.Parent = notifications
-		addBlur(notification, true, true)
-		local iconshadow = Instance.new('ImageLabel')
-		iconshadow.BackgroundTransparency = 1
-		iconshadow.Image = getvapeasset('hacksensev2/assets/new/noti_'..(type or 'info')..'.png')
-		iconshadow.ImageColor3 = Color3.new()
-		iconshadow.ImageTransparency = 0.5
-		iconshadow.Position = UDim2.fromOffset(-5, -8)
-		iconshadow.Size = UDim2.fromOffset(60, 60)
-		iconshadow.ZIndex = 5
-		iconshadow.Parent = notification
-		local icon = iconshadow:Clone()
-		icon.ImageColor3 = Color3.new(1, 1, 1)
-		icon.ImageTransparency = 0
-		icon.Position = UDim2.fromOffset(-1, -1)
-		icon.Parent = iconshadow
-		local label = Instance.new('TextLabel')
-		label.BackgroundTransparency = 1
-		label.FontFace = uipallet.FontSemiBold
-		label.Position = UDim2.fromOffset(46, 16)
-		label.RichText = true
-		label.Size = UDim2.new(1, -56, 0, 20)
-		label.Text = "<stroke joins='round' thickness='0.3' transparency='0.5'>"..title..'</stroke>'
-		label.TextColor3 = type == 'alert' and Color3.fromRGB(250, 50, 56) or Color3.new(1, 1, 1)
-		label.TextSize = 14
-		label.TextXAlignment = Enum.TextXAlignment.Left
-		label.TextYAlignment = Enum.TextYAlignment.Top
-		label.ZIndex = 5
-		label.Parent = notification
-		local textshadow = label:Clone()
-		textshadow.FontFace = uipallet.Font
-		textshadow.Position = UDim2.fromOffset(47, 44)
-		textshadow.RichText = false
-		textshadow.Text = removeTags(text)
-		textshadow.TextColor3 = Color3.new()
-		textshadow.TextTransparency = 0.5
-		textshadow.Parent = notification
-		notification.Size = UDim2.fromOffset(math.max(getfontbounds(textshadow.Text, 14, uipallet.Font).X + 80, 266), 75)
-		local textlabel = textshadow:Clone()
-		textlabel.Position = UDim2.fromOffset(-1, -1)
-		textlabel.RichText = true
-		textlabel.Text = text
-		textlabel.TextColor3 = Color3.fromRGB(170, 170, 170)
-		textlabel.TextTransparency = 0
-		textlabel.Parent = textshadow
-		local progress = Instance.new('Frame')
-		progress.BackgroundColor3 =
-			type == 'alert' and Color3.fromRGB(250, 50, 56)
-			or type == 'warning' and Color3.fromRGB(236, 129, 44)
-			or Color3.new(1, 1, 1)
-		progress.BorderSizePixel = 0
-		progress.Position = UDim2.new(0, 3, 1, -4)
-		progress.Size = UDim2.new(1, -13, 0, 1)
-		progress.ZIndex = 5
-		progress.Parent = notification
+                local index = #notifications:GetChildren() + 1
+                local notification = Instance.new('ImageLabel')
+                notification.BackgroundTransparency = 1
+                notification.Position = UDim2.new(1, 0, 1, -(29 + (78 * index)))
+                notification.Image = getvapeasset('hacksensev2/assets/new/notification.png')
+                notification.ScaleType = Enum.ScaleType.Slice
+                notification.SliceCenter = Rect.new(7, 7, 9, 9)
+                notification.ZIndex = 5
+                notification.Parent = notifications
+                addBlur(notification, true, true)
+                local iconshadow = Instance.new('ImageLabel')
+                iconshadow.BackgroundTransparency = 1
+                iconshadow.Image = getvapeasset('hacksensev2/assets/new/noti_'..(type or 'info')..'.png')
+                iconshadow.ImageColor3 = Color3.new()
+                iconshadow.ImageTransparency = 0.5
+                iconshadow.Position = UDim2.fromOffset(-5, -8)
+                iconshadow.Size = UDim2.fromOffset(60, 60)
+                iconshadow.ZIndex = 5
+                iconshadow.Parent = notification
+                local icon = iconshadow:Clone()
+                icon.ImageColor3 = Color3.new(1, 1, 1)
+                icon.ImageTransparency = 0
+                icon.Position = UDim2.fromOffset(-1, -1)
+                icon.Parent = iconshadow
+                local label = Instance.new('TextLabel')
+                label.BackgroundTransparency = 1
+                label.FontFace = uipallet.FontSemiBold
+                label.Position = UDim2.fromOffset(46, 16)
+                label.RichText = true
+                label.Size = UDim2.new(1, -56, 0, 20)
+                label.Text = "<stroke joins='round' thickness='0.3' transparency='0.5'>"..title..'</stroke>'
+                label.TextColor3 = type == 'alert' and Color3.fromRGB(250, 50, 56) or Color3.new(1, 1, 1)
+                label.TextSize = 14
+                label.TextXAlignment = Enum.TextXAlignment.Left
+                label.TextYAlignment = Enum.TextYAlignment.Top
+                label.ZIndex = 5
+                label.Parent = notification
+                local textshadow = label:Clone()
+                textshadow.FontFace = uipallet.Font
+                textshadow.Position = UDim2.fromOffset(47, 44)
+                textshadow.RichText = false
+                textshadow.Text = removeTags(text)
+                textshadow.TextColor3 = Color3.new()
+                textshadow.TextTransparency = 0.5
+                textshadow.Parent = notification
+                notification.Size = UDim2.fromOffset(math.max(getfontbounds(textshadow.Text, 14, uipallet.Font).X + 80, 266), 75)
+                local textlabel = textshadow:Clone()
+                textlabel.Position = UDim2.fromOffset(-1, -1)
+                textlabel.RichText = true
+                textlabel.Text = text
+                textlabel.TextColor3 = Color3.fromRGB(170, 170, 170)
+                textlabel.TextTransparency = 0
+                textlabel.Parent = textshadow
+                local progress = Instance.new('Frame')
+                progress.BackgroundColor3 =
+                        type == 'alert' and Color3.fromRGB(250, 50, 56)
+                        or type == 'warning' and Color3.fromRGB(236, 129, 44)
+                        or Color3.new(1, 1, 1)
+                progress.BorderSizePixel = 0
+                progress.Position = UDim2.new(0, 3, 1, -4)
+                progress.Size = UDim2.new(1, -13, 0, 1)
+                progress.ZIndex = 5
+                progress.Parent = notification
 
-		if tween.Tween then
-			tween:Tween(notification, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {
-				AnchorPoint = Vector2.new(1, 0)
-			}, 'tweenstwo')
+                if tween.Tween then
+                        tween:Tween(notification, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {
+                                AnchorPoint = Vector2.new(1, 0)
+                        }, 'tweenstwo')
 
-			tween:Tween(progress, TweenInfo.new(duration, Enum.EasingStyle.Linear), {
-				Size = UDim2.fromOffset(0, 1)
-			})
-		end
+                        tween:Tween(progress, TweenInfo.new(duration, Enum.EasingStyle.Linear), {
+                                Size = UDim2.fromOffset(0, 1)
+                        })
+                end
 
-		task.delay(duration, function()
-			if tween.Tween then
-				tween:Tween(notification, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {
-					AnchorPoint = Vector2.new(0, 0)
-				}, 'tweenstwo')
-			end
+                task.delay(duration, function()
+                        if tween.Tween then
+                                tween:Tween(notification, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {
+                                        AnchorPoint = Vector2.new(0, 0)
+                                }, 'tweenstwo')
+                        end
 
-			task.wait(0.2)
-			notification:ClearAllChildren()
-			notification:Destroy()
-		end)
-	end)
+                        task.wait(0.2)
+                        notification:ClearAllChildren()
+                        notification:Destroy()
+                end)
+        end)
 end
 
 function vape:CreateOverlay(props)
-	return components.Overlay(props)
+        return components.Overlay(props)
 end
 
 function vape:Load(skipgui, profile)
-	local guiData = {Categories = {}}
-	local oldProfile = self.Profile
-	local canSave = true
-	local toggleCount = 0
+        local guiData = {Categories = {}}
+        local oldProfile = self.Profile
+        local canSave = true
+        local toggleCount = 0
 
-	if isfile('hacksensev2/profiles/'..game.GameId..'.gui.txt') then
-		guiData = loadJson('hacksensev2/profiles/'..game.GameId..'.gui.txt')
-		if not guiData then
-			guiData = {Categories = {}}
-			self:CreateNotification('Vape', 'Failed to load GUI settings.', 10, 'alert')
-			canSave = false
-		end
+        if isfile('hacksensev2/profiles/'..game.GameId..'.gui.txt') then
+                guiData = loadJson('hacksensev2/profiles/'..game.GameId..'.gui.txt')
+                if not guiData then
+                        guiData = {Categories = {}}
+                        self:CreateNotification('Vape', 'Failed to load GUI settings.', 10, 'alert')
+                        canSave = false
+                end
 
-		if guiData.v ~= 1 then
-			guiData.Categories.Main = nil
-		end
+                if guiData.v ~= 1 then
+                        guiData.Categories.Main = nil
+                end
 
-		self.Profile = profile or guiData.Profile or 'default'
-		if self.ProfileLabel then
-			self.ProfileLabel.Text = #self.Profile > 10 and self.Profile:sub(1, 10)..'...' or self.Profile
-			self.ProfileLabel.Size = UDim2.fromOffset(getfontbounds(self.ProfileLabel.Text, self.ProfileLabel.TextSize, self.ProfileLabel.Font).X + 16, 24)
-		end
+                self.Profile = profile or guiData.Profile or 'default'
+                if self.ProfileLabel then
+                        self.ProfileLabel.Text = #self.Profile > 10 and self.Profile:sub(1, 10)..'...' or self.Profile
+                        self.ProfileLabel.Size = UDim2.fromOffset(getfontbounds(self.ProfileLabel.Text, self.ProfileLabel.TextSize, self.ProfileLabel.Font).X + 16, 24)
+                end
 
-		if not skipgui then
-			for name, data in guiData.Categories do
-				local category = self.Categories[name]
-				if category then
-					category:Load(data)
-				end
-			end
-		end
-	end
+                if not skipgui then
+                        for name, data in guiData.Categories do
+                                local category = self.Categories[name]
+                                if category then
+                                        category:Load(data)
+                                end
+                        end
+                end
+        end
 
-	if not self.Categories.Profiles:GetValue('default') then
-		self.Categories.Profiles:ChangeValue('default', true)
-	end
+        if not self.Categories.Profiles:GetValue('default') then
+                self.Categories.Profiles:ChangeValue('default', true)
+        end
 
-	if isfile('hacksensev2/profiles/'..self.Profile..self.Place..'.txt') then
-		local mainData = loadJson('hacksensev2/profiles/'..self.Profile..self.Place..'.txt')
-		if not mainData then
-			mainData = {Categories = {}, Modules = {}, Legit = {}}
-			self:CreateNotification('Vape', 'Failed to load '..self.Profile..' profile.', 10, 'alert')
-			canSave = false
-		end
+        if isfile('hacksensev2/profiles/'..self.Profile..self.Place..'.txt') then
+                local mainData = loadJson('hacksensev2/profiles/'..self.Profile..self.Place..'.txt')
+                if not mainData then
+                        mainData = {Categories = {}, Modules = {}, Legit = {}}
+                        self:CreateNotification('Vape', 'Failed to load '..self.Profile..' profile.', 10, 'alert')
+                        canSave = false
+                end
 
-		if mainData.v ~= 1 then
-			for _, data in mainData.Modules do
-				data.Bind = {Keys = data.Bind}
-				data.Visible = true
-			end
-		end
+                if mainData.v ~= 1 then
+                        for _, data in mainData.Modules do
+                                data.Bind = {Keys = data.Bind}
+                                data.Visible = true
+                        end
+                end
 
-		for name, data in mainData.Categories do
-			local category = self.Categories[name]
-			if category then
-				category:Load(data)
-			end
-		end
+                for name, data in mainData.Categories do
+                        local category = self.Categories[name]
+                        if category then
+                                category:Load(data)
+                        end
+                end
 
-		for name, data in mainData.Modules do
-			local module = self.Modules[name]
-			if module then
-				module:Load(data)
-				toggleCount += module.Enabled and 1 or 0
-			end
-		end
+                for name, data in mainData.Modules do
+                        local module = self.Modules[name]
+                        if module then
+                                module:Load(data)
+                                toggleCount += module.Enabled and 1 or 0
+                        end
+                end
 
-		for name, data in mainData.Legit do
-			local module = self.Legit.Modules[name]
-			if module then
-				module:Load(data)
-			end
-		end
+                for name, data in mainData.Legit do
+                        local module = self.Legit.Modules[name]
+                        if module then
+                                module:Load(data)
+                        end
+                end
 
-		self:UpdateTextGUI(true)
-	else
-		self:Save()
-	end
+                self:UpdateTextGUI(true)
+        else
+                self:Save()
+        end
 
-	if self.Profile ~= oldProfile and skipgui then
-		self:CreateNotification('Profile swap to <font color="#FFAA00">'..self.Profile..'</font>', toggleCount..' modules enabled', 3)
-	end
+        if self.Profile ~= oldProfile and skipgui then
+                self:CreateNotification('Profile swap to <font color="#FFAA00">'..self.Profile..'</font>', toggleCount..' modules enabled', 3)
+        end
 
-	if self.Downloader then
-		self.Downloader:Destroy()
-		self.Downloader = nil
-	end
+        if self.Downloader then
+                self.Downloader:Destroy()
+                self.Downloader = nil
+        end
 
-	self.Loaded = canSave
+        self.Loaded = canSave
 
-	if inputService.TouchEnabled and not skipgui then
-		local button = Instance.new('TextButton')
-		button.BackgroundColor3 = Color3.new()
-		button.BackgroundTransparency = 0.2
-		button.Position = UDim2.new(1, -90, 0, 4)
-		button.Size = UDim2.fromOffset(32, 32)
-		button.Text = ''
-		button.Parent = gui
-		local image = Instance.new('ImageLabel')
-		image.BackgroundTransparency = 1
-		image.Image = getvapeasset('hacksensev2/assets/new/vape.png')
-		image.Position = UDim2.fromOffset(6, 6)
-		image.Size = UDim2.fromOffset(20, 20)
-		image.Parent = button
-		addCorner(button, UDim.new(1, 0))
+        if inputService.TouchEnabled and not skipgui then
+                local button = Instance.new('TextButton')
+                button.BackgroundColor3 = Color3.new()
+                button.BackgroundTransparency = 0.2
+                button.Position = UDim2.new(1, -90, 0, 4)
+                button.Size = UDim2.fromOffset(32, 32)
+                button.Text = ''
+                button.Parent = gui
+                local image = Instance.new('ImageLabel')
+                image.BackgroundTransparency = 1
+                image.Image = getvapeasset('hacksensev2/assets/new/vape.png')
+                image.Position = UDim2.fromOffset(6, 6)
+                image.Size = UDim2.fromOffset(20, 20)
+                image.Parent = button
+                addCorner(button, UDim.new(1, 0))
 
-		button.MouseButton1Click:Connect(function()
-			self.GUIBind.Triggered:Fire(true)
-		end)
-	end
+                button.MouseButton1Click:Connect(function()
+                        self.GUIBind.Triggered:Fire(true)
+                end)
+        end
 
-	return toggleData
+        return toggleData
 end
 
 function vape:LoadOptions(obj, data)
-	for name, componentData in data do
-		local component = obj.Options[name]
+        for name, componentData in data do
+                local component = obj.Options[name]
 
-		if component then
-			component:Load(componentData)
-		end
-	end
+                if component then
+                        component:Load(componentData)
+                end
+        end
 end
 
 function vape:LoadGUI()
@@ -810,15 +810,15 @@ function vape:LoadGUI()
 	gui.IgnoreGuiInset = true
 	
 	if vape.ThreadFix then
-		local holder = Instance.new('Folder')
-		holder.Parent = cloneref(game:GetService('CoreGui'))
-		gui.OnTopOfCoreBlur = true
-		gui.Parent = (gethui and gethui()) or cloneref(game:GetService('CoreGui'))
-		vape.holder = holder
+	        local holder = Instance.new('Folder')
+	        holder.Parent = cloneref(game:GetService('CoreGui'))
+	        gui.OnTopOfCoreBlur = true
+	        gui.Parent = (gethui and gethui()) or cloneref(game:GetService('CoreGui'))
+	        vape.holder = holder
 	else
-		gui.Parent = cloneref(game:GetService('Players')).LocalPlayer.PlayerGui
-		gui.ResetOnSpawn = false
-		vape.holder = gui
+	        gui.Parent = cloneref(game:GetService('Players')).LocalPlayer.PlayerGui
+	        gui.ResetOnSpawn = false
+	        vape.holder = gui
 	end
 	vape.gui = gui
 	
@@ -877,126 +877,117 @@ function vape:LoadGUI()
 	components.GUI({})
 	
 	vape:CreateCategory({
-		Name = 'Combat',
-		Icon = getvapeasset('hacksensev2/assets/new/combat.png'),
-		Size = UDim2.fromOffset(13, 14)
+	        Name = 'Combat',
+	        Icon = getvapeasset('hacksensev2/assets/new/combat.png'),
+	        Size = UDim2.fromOffset(13, 14)
 	})
 	vape:CreateCategory({
-		Name = 'Blatant',
-		Icon = getvapeasset('hacksensev2/assets/new/blatant.png'),
-		Size = UDim2.fromOffset(14, 14)
+	        Name = 'Blatant',
+	        Icon = getvapeasset('hacksensev2/assets/new/blatant.png'),
+	        Size = UDim2.fromOffset(14, 14)
 	})
 	vape:CreateCategory({
-		Name = 'Render',
-		Icon = getvapeasset('hacksensev2/assets/new/render.png'),
-		Size = UDim2.fromOffset(15, 14)
+	        Name = 'Render',
+	        Icon = getvapeasset('hacksensev2/assets/new/render.png'),
+	        Size = UDim2.fromOffset(15, 14)
 	})
 	vape:CreateCategory({
-		Name = 'Utility',
-		Icon = getvapeasset('hacksensev2/assets/new/utility.png'),
-		Size = UDim2.fromOffset(15, 14)
+	        Name = 'Utility',
+	        Icon = getvapeasset('hacksensev2/assets/new/utility.png'),
+	        Size = UDim2.fromOffset(15, 14)
 	})
 	vape:CreateCategory({
-		Name = 'World',
-		Icon = getvapeasset('hacksensev2/assets/new/world.png'),
-		Size = UDim2.fromOffset(14, 14)
+	        Name = 'World',
+	        Icon = getvapeasset('hacksensev2/assets/new/world.png'),
+	        Size = UDim2.fromOffset(14, 14)
 	})
 	vape:CreateCategory({
-		Name = 'Inventory',
-		Icon = getvapeasset('hacksensev2/assets/new/inventory.png'),
-		Size = UDim2.fromOffset(15, 14)
+	        Name = 'Inventory',
+	        Icon = getvapeasset('hacksensev2/assets/new/inventory.png'),
+	        Size = UDim2.fromOffset(15, 14)
 	})
 	vape.Categories.Main:CreateDivider({
-		Text = 'misc'
+	        Text = 'misc'
 	})
 	
-	--[[
-		Friends
-	]]
 	do
-		local friends
-		local friendscolor = {
-			Hue = 1,
-			Sat = 1,
-			Value = 1
-		}
+	        local friends
+	        local friendscolor = {
+	                Hue = 1,
+	                Sat = 1,
+	                Value = 1
+	        }
 	
-		friends = vape:CreateCategoryList({
-			Name = 'Friends',
-			Icon = getvapeasset('hacksensev2/assets/new/friends.png'),
-			Size = UDim2.fromOffset(17, 16),
-			Placeholder = 'Roblox username',
-			Color = Color3.fromRGB(5, 134, 105),
-			Player = true,
-			Function = function()
-				friends.Update:Fire()
-				friends.ColorUpdate:Fire(friendscolor.Hue, friendscolor.Sat, friendscolor.Value)
-			end
-		})
-		friends.Update = Instance.new('BindableEvent')
-		friends.ColorUpdate = Instance.new('BindableEvent')
-		friends:CreateToggle({
-			Name = 'Recolor visuals',
-			Darker = true,
-			Default = true,
-			Function = function()
-				friends.Update:Fire()
-				friends.ColorUpdate:Fire(friendscolor.Hue, friendscolor.Sat, friendscolor.Value)
-			end
-		})
-		friendscolor = friends:CreateColorSlider({
-			Name = 'Friends color',
-			Darker = true,
-			Function = function(hue, sat, val)
-				for _, v in friends.Object.Children:GetChildren() do
-					local dot = v:FindFirstChild('Dot')
-					if dot and dot.BackgroundColor3 ~= color.Light(uipallet.Main, 0.37) then
-						dot.BackgroundColor3 = Color3.fromHSV(hue, sat, val)
-						dot.Dot.BackgroundColor3 = dot.BackgroundColor3
-					end
-				end
+	        friends = vape:CreateCategoryList({
+	                Name = 'Friends',
+	                Icon = getvapeasset('hacksensev2/assets/new/friends.png'),
+	                Size = UDim2.fromOffset(17, 16),
+	                Placeholder = 'Roblox username',
+	                Color = Color3.fromRGB(5, 134, 105),
+	                Player = true,
+	                Function = function()
+	                        friends.Update:Fire()
+	                        friends.ColorUpdate:Fire(friendscolor.Hue, friendscolor.Sat, friendscolor.Value)
+	                end
+	        })
+	        friends.Update = Instance.new('BindableEvent')
+	        friends.ColorUpdate = Instance.new('BindableEvent')
+	        friends:CreateToggle({
+	                Name = 'Recolor visuals',
+	                Darker = true,
+	                Default = true,
+	                Function = function()
+	                        friends.Update:Fire()
+	                        friends.ColorUpdate:Fire(friendscolor.Hue, friendscolor.Sat, friendscolor.Value)
+	                end
+	        })
+	        friendscolor = friends:CreateColorSlider({
+	                Name = 'Friends color',
+	                Darker = true,
+	                Function = function(hue, sat, val)
+	                        for _, v in friends.Object.Children:GetChildren() do
+	                                local dot = v:FindFirstChild('Dot')
+	                                if dot and dot.BackgroundColor3 ~= color.Light(uipallet.Main, 0.37) then
+	                                        dot.BackgroundColor3 = Color3.fromHSV(hue, sat, val)
+	                                        dot.Dot.BackgroundColor3 = dot.BackgroundColor3
+	                                end
+	                        end
 	
-				friends.ColorUpdate:Fire(hue, sat, val)
-			end
-		})
-		friends:CreateToggle({
-			Name = 'Use friends',
-			Darker = true,
-			Default = true,
-			Function = function()
-				friends.Update:Fire()
-				friends.ColorUpdate:Fire(friendscolor.Hue, friendscolor.Sat, friendscolor.Value)
-			end
-		})
-		vape:Clean(friends.Update)
-		vape:Clean(friends.ColorUpdate)
+	                        friends.ColorUpdate:Fire(hue, sat, val)
+	                end
+	        })
+	        friends:CreateToggle({
+	                Name = 'Use friends',
+	                Darker = true,
+	                Default = true,
+	                Function = function()
+	                        friends.Update:Fire()
+	                        friends.ColorUpdate:Fire(friendscolor.Hue, friendscolor.Sat, friendscolor.Value)
+	                end
+	        })
+	        vape:Clean(friends.Update)
+	        vape:Clean(friends.ColorUpdate)
 	end
 	
-	--[[
-		Profiles
-	]]
 	vape:CreateCategoryList({
-		Name = 'Profiles',
-		Icon = getvapeasset('hacksensev2/assets/new/profiles.png'),
-		Size = UDim2.fromOffset(17, 10),
-		Position = UDim2.fromOffset(12, 16),
-		Placeholder = 'Type name',
-		Profiles = true
+	        Name = 'Profiles',
+	        Icon = getvapeasset('hacksensev2/assets/new/profiles.png'),
+	        Size = UDim2.fromOffset(17, 10),
+	        Position = UDim2.fromOffset(12, 16),
+	        Placeholder = 'Type name',
+	        Profiles = true
 	})
 	
-	--[[
-		Targets
-	]]
 	local targets
 	targets = vape:CreateCategoryList({
-		Name = 'Targets',
-		Icon = getvapeasset('hacksensev2/assets/new/friends.png'),
-		Size = UDim2.fromOffset(17, 16),
-		Placeholder = 'Roblox username',
-		Player = true,
-		Function = function()
-			targets.Update:Fire()
-		end
+	        Name = 'Targets',
+	        Icon = getvapeasset('hacksensev2/assets/new/friends.png'),
+	        Size = UDim2.fromOffset(17, 16),
+	        Placeholder = 'Roblox username',
+	        Player = true,
+	        Function = function()
+	                targets.Update:Fire()
+	        end
 	})
 	targets.Update = Instance.new('BindableEvent')
 	vape:Clean(targets.Update)
@@ -1005,360 +996,332 @@ function vape:LoadGUI()
 	vape.SearchBar = components.SearchBar()
 	vape.Categories.Main:CreateOverlayBar()
 	
-	--[[
-		General Settings
-	]]
 	
 	local general = vape.Categories.Main.Settings:CreateSettingsPane({Name = 'General'})
 	local settingConnections = {}
 	vape.MultiKeybind = general:CreateToggle({
-		Name = 'Enable Multi-Keybinding',
-		Tooltip = 'Allows multiple keys to be bound to a module (eg. G + H)'
+	        Name = 'Enable Multi-Keybinding',
+	        Tooltip = 'Allows multiple keys to be bound to a module (eg. G + H)'
 	})
 	general:CreateToggle({
-		Name = 'Allow setting keybinds',
-		Function = function(callback)
-			if callback then
-				for _, container in {vape.Modules, vape.Legit.Modules} do
-					for _, module in container do
-						for _, component in module.Options do
-							if component.Type == 'Toggle' then
-								local bind = components.Bind({
-									Module = true
-								}, nil, component)
-								bind.Object.Position = UDim2.new(1, -40, 0, 5)
+	        Name = 'Allow setting keybinds',
+	        Function = function(callback)
+	                if callback then
+	                        for _, container in {vape.Modules, vape.Legit.Modules} do
+	                                for _, module in container do
+	                                        for _, component in module.Options do
+	                                                if component.Type == 'Toggle' then
+	                                                        local bind = components.Bind({
+	                                                                Module = true
+	                                                        }, nil, component)
+	                                                        bind.Object.Position = UDim2.new(1, -40, 0, 5)
 	
-								table.insert(settingConnections, bind.Triggered:Connect(function(isDown)
-									if bind.Hold then
-										if component.Enabled ~= isDown then
-											if vape.SettingToggleNotifications.Enabled then
-												vape:CreateNotification(module.Name, component.Name..' '..(not component.Enabled and "<font color='#00AA00'>ON</font>" or "<font color='#FF5A5A'>OFF</font>"), 1.5)
-											end
+	                                                        table.insert(settingConnections, bind.Triggered:Connect(function(isDown)
+	                                                                if bind.Hold then
+	                                                                        if component.Enabled ~= isDown then
+	                                                                                if vape.SettingToggleNotifications.Enabled then
+	                                                                                        vape:CreateNotification(module.Name, component.Name..' '..(not component.Enabled and "<font color='#00AA00'>ON</font>" or "<font color='#FF5A5A'>OFF</font>"), 1.5)
+	                                                                                end
 	
-											component:Toggle()
-										end
-									else
-										if vape.SettingToggleNotifications.Enabled then
-											vape:CreateNotification(module.Name, component.Name..' '..(not component.Enabled and "<font color='#00AA00'>ON</font>" or "<font color='#FF5A5A'>OFF</font>"), 1.5)
-										end
+	                                                                                component:Toggle()
+	                                                                        end
+	                                                                else
+	                                                                        if vape.SettingToggleNotifications.Enabled then
+	                                                                                vape:CreateNotification(module.Name, component.Name..' '..(not component.Enabled and "<font color='#00AA00'>ON</font>" or "<font color='#FF5A5A'>OFF</font>"), 1.5)
+	                                                                        end
 	
-										component:Toggle()
-									end
-								end))
+	                                                                        component:Toggle()
+	                                                                end
+	                                                        end))
 	
-								table.insert(settingConnections, component.Object.MouseEnter:Connect(function()
-									bind:SetVisible(true)
-								end))
+	                                                        table.insert(settingConnections, component.Object.MouseEnter:Connect(function()
+	                                                                bind:SetVisible(true)
+	                                                        end))
 	
-								table.insert(settingConnections, component.Object.MouseLeave:Connect(function()
-									bind:SetVisible(false)
-								end))
-							end
-						end
-					end
-				end
-			else
-				for _, container in {vape.Modules, vape.Legit.Modules} do
-					for _, module in container do
-						for _, component in module.Options do
-							if component.Bind then
-								component.Bind:Destroy()
-							end
-						end
-					end
-				end
+	                                                        table.insert(settingConnections, component.Object.MouseLeave:Connect(function()
+	                                                                bind:SetVisible(false)
+	                                                        end))
+	                                                end
+	                                        end
+	                                end
+	                        end
+	                else
+	                        for _, container in {vape.Modules, vape.Legit.Modules} do
+	                                for _, module in container do
+	                                        for _, component in module.Options do
+	                                                if component.Bind then
+	                                                        component.Bind:Destroy()
+	                                                end
+	                                        end
+	                                end
+	                        end
 	
-				for _, connection in settingConnections do
-					connection:Disconnect()
-				end
-				table.clear(settingConnections)
-			end
-		end,
-		Tooltip = 'Hover a toggle setting to bind it to a key'
+	                        for _, connection in settingConnections do
+	                                connection:Disconnect()
+	                        end
+	                        table.clear(settingConnections)
+	                end
+	        end,
+	        Tooltip = 'Hover a toggle setting to bind it to a key'
 	})
 	
 	general:CreateButton({
-		Name = 'Reset current profile',
-		Function = function()
-		vape.Save = function() end
-			if isfile('hacksensev2/profiles/'..vape.Profile..vape.Place..'.txt') and delfile then
-				delfile('hacksensev2/profiles/'..vape.Profile..vape.Place..'.txt')
-			end
+	        Name = 'Reset current profile',
+	        Function = function()
+	        vape.Save = function() end
+	                if isfile('hacksensev2/profiles/'..vape.Profile..vape.Place..'.txt') and delfile then
+	                        delfile('hacksensev2/profiles/'..vape.Profile..vape.Place..'.txt')
+	                end
 	
-			shared.vapereload = true
-			if shared.VapeDeveloper then
-				loadstring(readfile('hacksensev2/loader.lua'), 'loader')()
-			else
-				loadstring(game:HttpGet('https://raw.githubusercontent.com/mqiz/HSPrisonLife/'..readfile('hacksensev2/profiles/commit.txt')..'/loader.lua', true))()
-			end
-		end,
-		Tooltip = 'This will set your profile to the default settings of Vape'
+	                shared.vapereload = true
+	                if shared.VapeDeveloper then
+	                        loadstring(readfile('hacksensev2/loader.lua'), 'loader')()
+	                else
+	                        loadstring(game:HttpGet('https://raw.githubusercontent.com/mqiz/HSPrisonLife/'..readfile('hacksensev2/profiles/commit.txt')..'/loader.lua', true))()
+	                end
+	        end,
+	        Tooltip = 'This will set your profile to the default settings of Vape'
 	})
 	
 	general:CreateButton({
-		Name = 'Self destruct',
-		Function = function()
-			vape:Uninject()
-		end,
-		Tooltip = 'Removes vape from the current game'
+	        Name = 'Self destruct',
+	        Function = function()
+	                vape:Uninject()
+	        end,
+	        Tooltip = 'Removes vape from the current game'
 	})
 	
 	general:CreateButton({
-		Name = 'Reinject',
-		Function = function()
-			shared.vapereload = true
-			if shared.VapeDeveloper then
-				loadstring(readfile('hacksensev2/loader.lua'), 'loader')()
-			else
-				loadstring(game:HttpGet('https://raw.githubusercontent.com/mqiz/HSPrisonLife/'..readfile('hacksensev2/profiles/commit.txt')..'/loader.lua', true))()
-			end
-		end,
-		Tooltip = 'Reloads vape for debugging purposes'
+	        Name = 'Reinject',
+	        Function = function()
+	                shared.vapereload = true
+	                if shared.VapeDeveloper then
+	                        loadstring(readfile('hacksensev2/loader.lua'), 'loader')()
+	                else
+	                        loadstring(game:HttpGet('https://raw.githubusercontent.com/mqiz/HSPrisonLife/'..readfile('hacksensev2/profiles/commit.txt')..'/loader.lua', true))()
+	                end
+	        end,
+	        Tooltip = 'Reloads vape for debugging purposes'
 	})
 	
-	--[[
-		Module Settings
-	]]
 	
 	local modules = vape.Categories.Main.Settings:CreateSettingsPane({Name = 'Modules'})
 	modules:CreateToggle({
-		Name = 'Teams by server',
-		Tooltip = 'Ignore players on your team designated by the server',
-		Default = true,
-		Function = function()
-			if vape.Libraries.entity and vape.Libraries.entity.Running then
-				vape.Libraries.entity.refresh()
-			end
-		end
+	        Name = 'Teams by server',
+	        Tooltip = 'Ignore players on your team designated by the server',
+	        Default = true,
+	        Function = function()
+	                if vape.Libraries.entity and vape.Libraries.entity.Running then
+	                        vape.Libraries.entity.refresh()
+	                end
+	        end
 	})
 	
 	modules:CreateToggle({
-		Name = 'Use team color',
-		Tooltip = 'Uses the TeamColor property on players for render modules',
-		Default = true,
-		Function = function()
-			if vape.Libraries.entity and vape.Libraries.entity.Running then
-				vape.Libraries.entity.refresh()
-			end
-		end
+	        Name = 'Use team color',
+	        Tooltip = 'Uses the TeamColor property on players for render modules',
+	        Default = true,
+	        Function = function()
+	                if vape.Libraries.entity and vape.Libraries.entity.Running then
+	                        vape.Libraries.entity.refresh()
+	                end
+	        end
 	})
 	
-	--[[
-		GUI Settings
-	]]
 	
 	local guipane = vape.Categories.Main.Settings:CreateSettingsPane({Name = 'GUI'})
 	vape.Blur = guipane:CreateToggle({
-		Name = 'Blur background',
-		Function = function()
-			vape:BlurCheck()
-		end,
-		Default = true,
-		Tooltip = 'Blur the background of the GUI'
+	        Name = 'Blur background',
+	        Function = function()
+	                vape:BlurCheck()
+	        end,
+	        Default = true,
+	        Tooltip = 'Blur the background of the GUI'
 	})
 	
 	guipane:CreateToggle({
-		Name = 'GUI bind indicator',
-		Default = true,
-		Tooltip = "Displays a message indicating your GUI upon injecting.\nI.E. 'Press RSHIFT to open GUI'"
+	        Name = 'GUI bind indicator',
+	        Default = true,
+	        Tooltip = "Displays a message indicating your GUI upon injecting.\nI.E. 'Press RSHIFT to open GUI'"
 	})
 	
 	guipane:CreateToggle({
-		Name = 'Show tooltips',
-		Function = function(enabled)
-			tooltip.Visible = false
-			toolblur.Enabled = enabled
-		end,
-		Default = true,
-		Tooltip = 'Toggles visibility of these'
+	        Name = 'Show tooltips',
+	        Function = function(enabled)
+	                tooltip.Visible = false
+	                toolblur.Enabled = enabled
+	        end,
+	        Default = true,
+	        Tooltip = 'Toggles visibility of these'
 	})
 	
 	guipane:CreateToggle({
-		Name = 'Show legit mode',
-		Function = function(enabled)
-			clickgui.Search.Legit.Visible = enabled
-			clickgui.Search.LegitDivider.Visible = enabled
-			clickgui.Search.TextBox.Size = UDim2.new(1, enabled and -50 or -10, 0, 37)
-			clickgui.Search.TextBox.Position = UDim2.fromOffset(enabled and 50 or 10, 0)
-		end,
-		Default = true,
-		Tooltip = 'Shows the button to switch to the legit mod menu'
+	        Name = 'Show legit mode',
+	        Function = function(enabled)
+	                clickgui.Search.Legit.Visible = enabled
+	                clickgui.Search.LegitDivider.Visible = enabled
+	                clickgui.Search.TextBox.Size = UDim2.new(1, enabled and -50 or -10, 0, 37)
+	                clickgui.Search.TextBox.Position = UDim2.fromOffset(enabled and 50 or 10, 0)
+	        end,
+	        Default = true,
+	        Tooltip = 'Shows the button to switch to the legit mod menu'
 	})
 	
 	local ScaleSlider = {Object = {}, Value = 1}
 	vape.Scale = guipane:CreateToggle({
-		Name = 'Auto rescale',
-		Default = true,
-		Function = function(callback)
-			ScaleSlider.Object.Visible = not callback
-			if callback then
-				--scale.Scale = math.max(gui.AbsoluteSize.X / 1920, 0.6)
-			else
-				scale.Scale = ScaleSlider.Value
-			end
-		end,
-		Tooltip = 'Automatically rescales the gui using the screens resolution'
+	        Name = 'Auto rescale',
+	        Default = true,
+	        Function = function(callback)
+	                ScaleSlider.Object.Visible = not callback
+	                if callback then
+	                else
+	                        scale.Scale = ScaleSlider.Value
+	                end
+	        end,
+	        Tooltip = 'Automatically rescales the gui using the screens resolution'
 	})
 	
 	ScaleSlider = guipane:CreateSlider({
-		Name = 'Scale',
-		Min = 0.1,
-		Max = 2,
-		Decimal = 10,
-		Function = function(val, final)
-			if final and not vape.Scale.Enabled then
-				scale.Scale = val
-			end
-		end,
-		Default = 1,
-		Darker = true,
-		Visible = false
+	        Name = 'Scale',
+	        Min = 0.1,
+	        Max = 2,
+	        Decimal = 10,
+	        Function = function(val, final)
+	                if final and not vape.Scale.Enabled then
+	                        scale.Scale = val
+	                end
+	        end,
+	        Default = 1,
+	        Darker = true,
+	        Visible = false
 	})
 	
 	vape.RainbowSpeed = guipane:CreateSlider({
-		Name = 'Rainbow speed',
-		Min = 0.1,
-		Max = 10,
-		Decimal = 10,
-		Default = 1,
-		Tooltip = 'Adjusts the speed of rainbow values'
+	        Name = 'Rainbow speed',
+	        Min = 0.1,
+	        Max = 10,
+	        Decimal = 10,
+	        Default = 1,
+	        Tooltip = 'Adjusts the speed of rainbow values'
 	})
 	
 	vape.RainbowUpdateSpeed = guipane:CreateSlider({
-		Name = 'Rainbow update rate',
-		Min = 1,
-		Max = 144,
-		Default = 60,
-		Tooltip = 'Adjusts the update rate of rainbow values',
-		Suffix = 'hz'
+	        Name = 'Rainbow update rate',
+	        Min = 1,
+	        Max = 144,
+	        Default = 60,
+	        Tooltip = 'Adjusts the update rate of rainbow values',
+	        Suffix = 'hz'
 	})
 	
-	--[[guipane:CreateDropdown({
-		Name = 'GUI Theme',
-		List = inputService.TouchEnabled and {'new', 'old'} or {'new', 'old', 'rise'},
-		Function = function(val, mouse)
-			if mouse then
-				writefile('hacksensev2/profiles/gui.txt', val)
-				shared.vapereload = true
-				if shared.VapeDeveloper then
-					loadstring(readfile('hacksensev2/loader.lua'), 'loader')()
-				else
-					loadstring(game:HttpGet('https://raw.githubusercontent.com/mqiz/HSPrisonLife/'..readfile('hacksensev2/profiles/commit.txt')..'/loader.lua', true))()
-				end
-			end
-		end,
-		Tooltip = 'new - The newest vape theme to since v4.05\nold - The vape theme pre v4.05\nrise - Rise 6.0'
-	})]]
 	
 	guipane:CreateDropdown({
-		Name = 'Search bar style',
-		List = {'Floating', 'None'},
-		Default = 'Floating',
-		Function = function(value)
-			vape.SearchBar.Object.Visible = value == 'Floating'
-		end,
-		Tooltip = 'Switch between search bar styles'
+	        Name = 'Search bar style',
+	        List = {'Floating', 'None'},
+	        Default = 'Floating',
+	        Function = function(value)
+	                vape.SearchBar.Object.Visible = value == 'Floating'
+	        end,
+	        Tooltip = 'Switch between search bar styles'
 	})
 	
 	vape.RainbowMode = guipane:CreateDropdown({
-		Name = 'Rainbow Mode',
-		List = {'Normal', 'Gradient', 'Retro'},
-		Tooltip = 'Normal - Smooth color fade\nGradient - Gradient color fade\nRetro - Static color'
+	        Name = 'Rainbow Mode',
+	        List = {'Normal', 'Gradient', 'Retro'},
+	        Tooltip = 'Normal - Smooth color fade\nGradient - Gradient color fade\nRetro - Static color'
 	})
 	
 	guipane:CreateButton({
-		Name = 'Reset GUI positions',
-		Function = function()
-			for _, category in vape.Categories do
-				category.Object.Position = UDim2.fromOffset(6, 42)
-			end
-		end,
-		Tooltip = 'This will reset your GUI back to the default'
+	        Name = 'Reset GUI positions',
+	        Function = function()
+	                for _, category in vape.Categories do
+	                        category.Object.Position = UDim2.fromOffset(6, 42)
+	                end
+	        end,
+	        Tooltip = 'This will reset your GUI back to the default'
 	})
 	
 	guipane:CreateButton({
-		Name = 'Sort GUI',
-		Function = function()
-			local priority = {
-				GUICategory = 1,
-				CombatCategory = 2,
-				BlatantCategory = 3,
-				RenderCategory = 4,
-				UtilityCategory = 5,
-				WorldCategory = 6,
-				InventoryCategory = 7,
-				FriendsCategory = 8,
-				ProfilesCategory = 9
-			}
+	        Name = 'Sort GUI',
+	        Function = function()
+	                local priority = {
+	                        GUICategory = 1,
+	                        CombatCategory = 2,
+	                        BlatantCategory = 3,
+	                        RenderCategory = 4,
+	                        UtilityCategory = 5,
+	                        WorldCategory = 6,
+	                        InventoryCategory = 7,
+	                        FriendsCategory = 8,
+	                        ProfilesCategory = 9
+	                }
 	
-			local categories = {}
-			for _, category in vape.Categories do
-				if category.Type ~= 'Overlay' then
-					table.insert(categories, category)
-				end
-			end
+	                local categories = {}
+	                for _, category in vape.Categories do
+	                        if category.Type ~= 'Overlay' then
+	                                table.insert(categories, category)
+	                        end
+	                end
 	
-			table.sort(categories, function(a, b)
-				return (priority[a.Object.Name] or 99) < (priority[b.Object.Name] or 99)
-			end)
+	                table.sort(categories, function(a, b)
+	                        return (priority[a.Object.Name] or 99) < (priority[b.Object.Name] or 99)
+	                end)
 	
-			local index = 0
-			for _, category in categories do
-				if category.Object.Visible then
-					category.Object.Position = UDim2.fromOffset(6 + (index % 8 * 230), 60 + (index > 7 and 360 or 0))
-					index += 1
-				end
-			end
-		end,
-		Tooltip = 'Sorts GUI by category order'
+	                local index = 0
+	                for _, category in categories do
+	                        if category.Object.Visible then
+	                                category.Object.Position = UDim2.fromOffset(6 + (index % 8 * 230), 60 + (index > 7 and 360 or 0))
+	                                index += 1
+	                        end
+	                end
+	        end,
+	        Tooltip = 'Sorts GUI by category order'
 	})
 	
-	--[[
-		Notification Settings
-	]]
 	
 	local notifpane = vape.Categories.Main.Settings:CreateSettingsPane({Name = 'Notifications'})
 	vape.Notifications = notifpane:CreateToggle({
-		Name = 'Notifications',
-		Function = function(enabled)
-			if vape.ToggleNotifications.Object then
-				vape.ToggleNotifications.Object.Visible = enabled
-			end
+	        Name = 'Notifications',
+	        Function = function(enabled)
+	                if vape.ToggleNotifications.Object then
+	                        vape.ToggleNotifications.Object.Visible = enabled
+	                end
 	
-			if vape.SettingToggleNotifications.Object then
-				vape.SettingToggleNotifications.Object.Visible = enabled
-			end
-		end,
-		Tooltip = 'Shows notifications',
-		Default = true
+	                if vape.SettingToggleNotifications.Object then
+	                        vape.SettingToggleNotifications.Object.Visible = enabled
+	                end
+	        end,
+	        Tooltip = 'Shows notifications',
+	        Default = true
 	})
 	
 	vape.ToggleNotifications = notifpane:CreateToggle({
-		Name = 'Toggle alert',
-		Tooltip = 'Notifies you if a module is enabled/disabled.',
-		Default = true,
-		Darker = true
+	        Name = 'Toggle alert',
+	        Tooltip = 'Notifies you if a module is enabled/disabled.',
+	        Default = true,
+	        Darker = true
 	})
 	vape.SettingToggleNotifications = notifpane:CreateToggle({
-		Name = 'Setting toggle alert',
-		Tooltip = 'Notifies you when a bound setting is toggled.',
-		Default = true,
-		Darker = true
+	        Name = 'Setting toggle alert',
+	        Tooltip = 'Notifies you when a bound setting is toggled.',
+	        Default = true,
+	        Darker = true
 	})
 	
 	vape.GUIColor = vape.Categories.Main.Settings:CreateGUISlider({
-		Name = 'GUI Theme',
-		Function = function(h, s, v)
-			vape:UpdateGUI()
-		end
+	        Name = 'GUI Theme',
+	        Function = function(h, s, v)
+	                vape:UpdateGUI()
+	        end
 	})
 	
 	vape.GUIBind = vape.Categories.Main.Settings:CreateBind({
-		Name = 'Rebind GUI',
-		Default = {'RightShift'},
-		NoRemove = true,
-		Tooltip = 'Change the bind of the GUI'
+	        Name = 'Rebind GUI',
+	        Default = {'RightShift'},
+	        NoRemove = true,
+	        Tooltip = 'Change the bind of the GUI'
 	})
+	
 	
 	run(function()
 		local Sort
@@ -1581,9 +1544,6 @@ function vape:LoadGUI()
 		})
 		
 		
-		--[[
-		        Text GUI Objects
-		]]
 		
 		Scale = Instance.new('UIScale')
 		Scale.Parent = TextGUI.Children
@@ -1593,8 +1553,8 @@ function vape:LoadGUI()
 		Logo.BorderSizePixel = 0
 		Logo.Image = getvapeasset('hacksensev2/assets/new/vapelogo.png')
 		Logo.Name = 'Logo'
-		Logo.Position = UDim2.new(1, -134, 0, 3)
-		Logo.Size = UDim2.fromOffset(130, 24)
+		Logo.Position = UDim2.new(1, -45, 0, 3)
+		Logo.Size = UDim2.fromOffset(41, 24)
 		Logo.Visible = false
 		Logo.Parent = TextGUI.Children
 		local LogoShadow = Logo:Clone()
@@ -1871,9 +1831,6 @@ function vape:LoadGUI()
 	end)
 	
 	run(function()
-		--[[
-			Target Info
-		]]
 		
 		local targetinfo = {
 			Targets = {},
@@ -2126,348 +2083,348 @@ function vape:LoadGUI()
 		
 		vape.Libraries.targetinfo = targetinfo
 	end)
-	
 	vape:Clean(task.spawn(function()
-		local hue = 0
-		repeat
-			for _, component in vape.RainbowSliders do
-				if component.Type == 'GUISlider' then
-					component:SetValue(vape:Color(hue))
-				else
-					component:SetValue(hue)
-				end
-			end
+	        local hue = 0
+	        repeat
+	                for _, component in vape.RainbowSliders do
+	                        if component.Type == 'GUISlider' then
+	                                component:SetValue(vape:Color(hue))
+	                        else
+	                                component:SetValue(hue)
+	                        end
+	                end
 	
-			local delta = task.wait(1 / vape.RainbowUpdateSpeed.Value)
-			hue = (hue + (delta * (0.2 * vape.RainbowSpeed.Value))) % 1
-		until false
+	                local delta = task.wait(1 / vape.RainbowUpdateSpeed.Value)
+	                hue = (hue + (delta * (0.2 * vape.RainbowSpeed.Value))) % 1
+	        until false
 	end))
 	
 	local cursorConnection
 	vape:Clean(clickgui:GetPropertyChangedSignal('Visible'):Connect(function()
-		vape:UpdateGUI()
+	        vape:UpdateGUI()
 	
-		if clickgui.Visible and inputService.MouseEnabled then
-			if cursorConnection then
-				cursorConnection:Disconnect()
-			end
+	        if clickgui.Visible and inputService.MouseEnabled then
+	                if cursorConnection then
+	                        cursorConnection:Disconnect()
+	                end
 	
-			cursorConnection = runService.RenderStepped:Connect(function()
-				local isVisible = clickgui.Visible
-				for _, window in vape.Windows do
-					isVisible = isVisible or window.Visible
-				end
+	                cursorConnection = runService.RenderStepped:Connect(function()
+	                        local isVisible = clickgui.Visible
+	                        for _, window in vape.Windows do
+	                                isVisible = isVisible or window.Visible
+	                        end
 	
-				if not isVisible then
-					cursor.Visible = false
-					cursorConnection:Disconnect()
-					cursorConnection = nil
-					return
-				end
+	                        if not isVisible then
+	                                cursor.Visible = false
+	                                cursorConnection:Disconnect()
+	                                cursorConnection = nil
+	                                return
+	                        end
 	
-				cursor.Visible = not inputService.MouseIconEnabled
-				if cursor.Visible then
-					local mouseLocation = inputService:GetMouseLocation()
-					cursor.Position = UDim2.fromOffset(mouseLocation.X - 31, mouseLocation.Y - 32)
-				end
-			end)
-		end
+	                        cursor.Visible = not inputService.MouseIconEnabled
+	                        if cursor.Visible then
+	                                local mouseLocation = inputService:GetMouseLocation()
+	                                cursor.Position = UDim2.fromOffset(mouseLocation.X - 31, mouseLocation.Y - 32)
+	                        end
+	                end)
+	        end
 	end))
 	
 	vape:Clean(function()
-		if cursorConnection then
-			cursorConnection:Disconnect()
-		end
+	        if cursorConnection then
+	                cursorConnection:Disconnect()
+	        end
 	end)
 	
 	vape:Clean(gui:GetPropertyChangedSignal('AbsoluteSize'):Connect(function()
-		if vape.Scale.Enabled then
-			scale.Scale = math.max(gui.AbsoluteSize.X / 1920, 0.6)
-		end
+	        if vape.Scale.Enabled then
+	                scale.Scale = math.max(gui.AbsoluteSize.X / 1920, 0.6)
+	        end
 	end))
 	
 	vape:Clean(notifications.ChildRemoved:Connect(function()
-		for index, notif in notifications:GetChildren() do
-			if tween.Tween then
-				tween:Tween(notif, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {
-					Position = UDim2.new(1, 0, 1, -(29 + (78 * index)))
-				})
-			end
-		end
+	        for index, notif in notifications:GetChildren() do
+	                if tween.Tween then
+	                        tween:Tween(notif, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {
+	                                Position = UDim2.new(1, 0, 1, -(29 + (78 * index)))
+	                        })
+	                end
+	        end
 	end))
 	
 	vape:Clean(scale:GetPropertyChangedSignal('Scale'):Connect(function()
-		scaledgui.Size = UDim2.fromScale(1 / scale.Scale, 1 / scale.Scale)
+	        scaledgui.Size = UDim2.fromScale(1 / scale.Scale, 1 / scale.Scale)
 	
-		for _, obj in scaledgui:QueryDescendants('GuiObject >> [Visible = true]') do
-			obj.Visible = false
-			obj.Visible = true
-		end
+	        for _, obj in scaledgui:QueryDescendants('GuiObject >> [Visible = true]') do
+	                obj.Visible = false
+	                obj.Visible = true
+	        end
 	end))
 	
 	vape:Clean(vape.GUIBind.Triggered:Connect(function()
-		if vape.ThreadFix then
-			setthreadidentity(8)
-		end
+	        if vape.ThreadFix then
+	                setthreadidentity(8)
+	        end
 	
-		for _, window in self.Windows do
-			window.Visible = false
-		end
+	        for _, window in self.Windows do
+	                window.Visible = false
+	        end
 	
-		for _, module in self.Modules do
-			if module.Bind.Mobile then
-				module.Bind.Mobile.Visible = clickgui.Visible
-			end
-		end
+	        for _, module in self.Modules do
+	                if module.Bind.Mobile then
+	                        module.Bind.Mobile.Visible = clickgui.Visible
+	                end
+	        end
 	
-		clickgui.Visible = not clickgui.Visible
-		vape:BlurCheck()
+	        clickgui.Visible = not clickgui.Visible
+	        vape:BlurCheck()
 	end))
 	
 	vape:Clean(inputService.InputBegan:Connect(function(input)
-		if vape.CurrentTooltip and input.KeyCode == Enum.KeyCode.LeftShift then
-			vape.CurrentTooltip()
-		end
+	        if vape.CurrentTooltip and input.KeyCode == Enum.KeyCode.LeftShift then
+	                vape.CurrentTooltip()
+	        end
 	
-		if vape.Autocomplete and input.KeyCode == Enum.KeyCode.Tab then
-			vape.Autocomplete()
-		end
+	        if vape.Autocomplete and input.KeyCode == Enum.KeyCode.Tab then
+	                vape.Autocomplete()
+	        end
 	
-		if not inputService:GetFocusedTextBox() and input.KeyCode ~= Enum.KeyCode.Unknown then
-			table.insert(vape.HeldKeybinds, input.KeyCode.Name)
-			if vape.Binding then return end
+	        if not inputService:GetFocusedTextBox() and input.KeyCode ~= Enum.KeyCode.Unknown then
+	                table.insert(vape.HeldKeybinds, input.KeyCode.Name)
+	                if vape.Binding then return end
 	
-			for _, bind in vape.ActiveBinds do
-				if checkKeybinds(vape.HeldKeybinds, bind.Keys, input.KeyCode.Name) then
-					bind.Triggered:Fire(true)
-				end
-			end
-		end
+	                for _, bind in vape.ActiveBinds do
+	                        if checkKeybinds(vape.HeldKeybinds, bind.Keys, input.KeyCode.Name) then
+	                                bind.Triggered:Fire(true)
+	                        end
+	                end
+	        end
 	end))
 	
 	vape:Clean(inputService.InputEnded:Connect(function(input)
-		if vape.CurrentTooltip and input.KeyCode == Enum.KeyCode.LeftShift then
-			vape.CurrentTooltip()
-		end
+	        if vape.CurrentTooltip and input.KeyCode == Enum.KeyCode.LeftShift then
+	                vape.CurrentTooltip()
+	        end
 	
-		if not inputService:GetFocusedTextBox() and input.KeyCode ~= Enum.KeyCode.Unknown then
-			if vape.Binding then
-				if not vape.MultiKeybind.Enabled then
-					vape.HeldKeybinds = {input.KeyCode.Name}
-				end
+	        if not inputService:GetFocusedTextBox() and input.KeyCode ~= Enum.KeyCode.Unknown then
+	                if vape.Binding then
+	                        if not vape.MultiKeybind.Enabled then
+	                                vape.HeldKeybinds = {input.KeyCode.Name}
+	                        end
 	
-				vape.Binding:SetBind(vape.HeldKeybinds, true)
-				vape.Binding = nil
-			else
-				for _, bind in vape.ActiveBinds do
-					if bind.Hold and checkKeybinds(vape.HeldKeybinds, bind.Keys, input.KeyCode.Name) then
-						bind.Triggered:Fire(false)
-					end
-				end
-			end
-		end
+	                        vape.Binding:SetBind(vape.HeldKeybinds, true)
+	                        vape.Binding = nil
+	                else
+	                        for _, bind in vape.ActiveBinds do
+	                                if bind.Hold and checkKeybinds(vape.HeldKeybinds, bind.Keys, input.KeyCode.Name) then
+	                                        bind.Triggered:Fire(false)
+	                                end
+	                        end
+	                end
+	        end
 	
-		local index = table.find(vape.HeldKeybinds, input.KeyCode.Name)
-		if index then
-			table.remove(vape.HeldKeybinds, index)
-		end
+	        local index = table.find(vape.HeldKeybinds, input.KeyCode.Name)
+	        if index then
+	                table.remove(vape.HeldKeybinds, index)
+	        end
 	end))
 end
 
 function vape:Remove(obj)
-	local container = (self.Modules[obj] and self.Modules or self.Legit.Modules[obj] and self.Legit.Modules or self.Categories)
-	if container and container[obj] then
-		local component = container[obj]
-		local isModule = component.Type == 'Module'
-		if self.ThreadFix then
-			setthreadidentity(8)
-		end
+        local container = (self.Modules[obj] and self.Modules or self.Legit.Modules[obj] and self.Legit.Modules or self.Categories)
+        if container and container[obj] then
+                local component = container[obj]
+                local isModule = component.Type == 'Module'
+                if self.ThreadFix then
+                        setthreadidentity(8)
+                end
 
-		if component.Destroy then
-			component:Destroy()
-		end
+                if component.Destroy then
+                        component:Destroy()
+                end
 
-		for _, child in {'Object', 'Children', 'Toggle', 'Button'} do
-			child = typeof(component[child]) == 'table' and component[child].Object or component[child]
+                for _, child in {'Object', 'Children', 'Toggle', 'Button'} do
+                        child = typeof(component[child]) == 'table' and component[child].Object or component[child]
 
-			if typeof(child) == 'Instance' then
-				child:Destroy()
-				child:ClearAllChildren()
-			end
-		end
+                        if typeof(child) == 'Instance' then
+                                child:Destroy()
+                                child:ClearAllChildren()
+                        end
+                end
 
-		loopClean(component)
-		container[obj] = nil
+                loopClean(component)
+                container[obj] = nil
 
-		if isModule then
-			self:SortCategories()
-		end
-	end
+                if isModule then
+                        self:SortCategories()
+                end
+        end
 end
 
 function vape:Save(newProfile)
-	if not self.Loaded then
-		return
-	end
+        if not self.Loaded then
+                return
+        end
 
-	local guiData = {
-		Categories = {},
-		Profile = newProfile or self.Profile,
-		v = 1
-	}
+        local guiData = {
+                Categories = {},
+                Profile = newProfile or self.Profile,
+                v = 1
+        }
 
-	local mainData = {
-		Modules = {},
-		Categories = {},
-		Legit = {},
-		v = 1
-	}
+        local mainData = {
+                Modules = {},
+                Categories = {},
+                Legit = {},
+                v = 1
+        }
 
-	for name, category in self.Categories do
-		category:Save((category.Type == 'Overlay' and mainData or guiData).Categories)
-	end
+        for name, category in self.Categories do
+                category:Save((category.Type == 'Overlay' and mainData or guiData).Categories)
+        end
 
-	for _, module in self.Modules do
-		module:Save(mainData.Modules)
-	end
+        for _, module in self.Modules do
+                module:Save(mainData.Modules)
+        end
 
-	for _, module in self.Legit.Modules do
-		module:Save(mainData.Legit)
-	end
+        for _, module in self.Legit.Modules do
+                module:Save(mainData.Legit)
+        end
 
-	writefile('hacksensev2/profiles/'..game.GameId..'.gui.txt', httpService:JSONEncode(guiData))
-	writefile('hacksensev2/profiles/'..self.Profile..self.Place..'.txt', httpService:JSONEncode(mainData))
+        writefile('hacksensev2/profiles/'..game.GameId..'.gui.txt', httpService:JSONEncode(guiData))
+        writefile('hacksensev2/profiles/'..self.Profile..self.Place..'.txt', httpService:JSONEncode(mainData))
 end
 
 function vape:SaveOptions(obj)
-	local data = {}
-	for _, component in obj.Options do
-		if not component.Save then
-			continue
-		end
+        local data = {}
+        for _, component in obj.Options do
+                if not component.Save then
+                        continue
+                end
 
-		component:Save(data)
-	end
+                component:Save(data)
+        end
 
-	return data
+        return data
 end
 
 function vape:SortCategories()
-	local sorting = {}
-	for _, module in self.Modules do
-		sorting[module.Category] = sorting[module.Category] or {}
-		table.insert(sorting[module.Category], module.Name)
-	end
+        local sorting = {}
+        for _, module in self.Modules do
+                sorting[module.Category] = sorting[module.Category] or {}
+                table.insert(sorting[module.Category], module.Name)
+        end
 
-	for _, sort in sorting do
-		table.sort(sort)
+        for _, sort in sorting do
+                table.sort(sort)
 
-		local index = 2
-		for _, name in sort do
-			self.Modules[name].Index = index / 2
-			self.Modules[name].Object.LayoutOrder = index
-			self.Modules[name].Children.LayoutOrder = index + 1
-			index += 2
-		end
-	end
+                local index = 2
+                for _, name in sort do
+                        self.Modules[name].Index = index / 2
+                        self.Modules[name].Object.LayoutOrder = index
+                        self.Modules[name].Children.LayoutOrder = index + 1
+                        index += 2
+                end
+        end
 end
 
 function vape:Uninject()
-	self:Save()
-	self.Loaded = nil
+        self:Save()
+        self.Loaded = nil
 
-	for _, module in self.Modules do
-		if module.Enabled then
-			module:Toggle()
-		end
-	end
+        for _, module in self.Modules do
+                if module.Enabled then
+                        module:Toggle()
+                end
+        end
 
-	for _, module in self.Legit.Modules do
-		if module.Enabled then
-			module:Toggle()
-		end
-	end
+        for _, module in self.Legit.Modules do
+                if module.Enabled then
+                        module:Toggle()
+                end
+        end
 
-	for _, category in self.Categories do
-		if category.Type == 'Overlay' and category.Button.Enabled then
-			category.Button:Toggle()
-		end
-	end
+        for _, category in self.Categories do
+                if category.Type == 'Overlay' and category.Button.Enabled then
+                        category.Button:Toggle()
+                end
+        end
 
-	for _, connection in self.Connections do
-		pcall(function()
-			connection:Disconnect()
-		end)
-	end
+        for _, connection in self.Connections do
+                pcall(function()
+                        connection:Disconnect()
+                end)
+        end
 
-	if self.ThreadFix then
-		setthreadidentity(8)
-		clickgui.Visible = false
-		self:BlurCheck()
-	end
+        if self.ThreadFix then
+                setthreadidentity(8)
+                clickgui.Visible = false
+                self:BlurCheck()
+        end
 
-	gui:ClearAllChildren()
-	gui:Destroy()
-	table.clear(self.Connections)
-	table.clear(self.Libraries)
-	loopClean(self)
+        gui:ClearAllChildren()
+        gui:Destroy()
+        table.clear(self.Connections)
+        table.clear(self.Libraries)
+        loopClean(self)
 
-	shared.vape = nil
-	shared.vapereload = nil
-	shared.VapeIndependent = nil
+        shared.vape = nil
+        shared.vapereload = nil
+        shared.VapeIndependent = nil
 end
 
 local guiUpdate
 function vape:UpdateGUI()
-	if guiUpdate then
-		return
-	end
+        if guiUpdate then
+                return
+        end
 
-	guiUpdate = runService.RenderStepped:Once(function()
-		if vape.Loaded ~= nil then
-			vape:UpdateGUIQueue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
-		end
+        guiUpdate = runService.RenderStepped:Once(function()
+                if vape.Loaded ~= nil then
+                        vape:UpdateGUIQueue(vape.GUIColor.Hue, vape.GUIColor.Sat, vape.GUIColor.Value)
+                end
 
-		guiUpdate = nil
-	end)
+                guiUpdate = nil
+        end)
 end
 
 function vape:UpdateGUIQueue(hue, sat, val)
-	if TextGUI.Button.Enabled then
-		TextGUI:UpdateColor(hue, sat, val, default)
-	end
+        if TextGUI.Button.Enabled then
+                TextGUI:UpdateColor(hue, sat, val, default)
+        end
 
-	if not clickgui.Visible and not vape.Legit.Window.Visible then return end
-	local isRainbow = vape.GUIColor.Rainbow and vape.RainbowMode.Value ~= 'Retro'
+        if not clickgui.Visible and not vape.Legit.Window.Visible then return end
+        local isRainbow = vape.GUIColor.Rainbow and vape.RainbowMode.Value ~= 'Retro'
 
-	for name, component in vape.Categories do
-		component:Color(hue, sat, val, isRainbow)
-	end
+        for name, component in vape.Categories do
+                component:Color(hue, sat, val, isRainbow)
+        end
 
-	for _, component in vape.Modules do
-		component:Color(hue, sat, val, isRainbow)
-	end
+        for _, component in vape.Modules do
+                component:Color(hue, sat, val, isRainbow)
+        end
 
-	for _, component in vape.Overlays.Options do
-		if component.Color then
-			component:Color(hue, sat, val, isRainbow)
-		end
-	end
+        for _, component in vape.Overlays.Options do
+                if component.Color then
+                        component:Color(hue, sat, val, isRainbow)
+                end
+        end
 
-	for _, pane in vape.Settings do
-		for _, component in pane.Options do
-			if component.Color then
-				component:Color(hue, sat, val, isRainbow)
-			end
-		end
-	end
+        for _, pane in vape.Settings do
+                for _, component in pane.Options do
+                        if component.Color then
+                                component:Color(hue, sat, val, isRainbow)
+                        end
+                end
+        end
 
-	if vape.Legit.Window.Visible then
-		for _, component in vape.Legit.Modules do
-			component:Color(hue, sat, val, isRainbow)
-		end
-	end
+        if vape.Legit.Window.Visible then
+                for _, component in vape.Legit.Modules do
+                        component:Color(hue, sat, val, isRainbow)
+                end
+        end
 end
+
 
 components = {
 	Bind = function(props, children, api)
@@ -4159,7 +4116,6 @@ components = {
 			label.FontFace = uipallet.Font
 			label.Parent = children
 			divider.BackgroundTransparency = 1
-			--divider.Position = UDim2.fromOffset(0, 26)
 			divider.Parent = label
 		end
 	end,
@@ -4397,7 +4353,7 @@ components = {
 		logo.ImageColor3 = select(3, uipallet.Main:ToHSV()) > 0.5 and uipallet.Text or Color3.new(1, 1, 1)
 		logo.Name = 'VapeLogo'
 		logo.Position = UDim2.fromOffset(12, 11)
-		logo.Size = UDim2.fromOffset(95, 16)
+		logo.Size = UDim2.fromOffset(27, 16)
 		logo.Parent = window
 		local children = Instance.new('Frame')
 		children.BackgroundTransparency = 1
@@ -5637,9 +5593,6 @@ components = {
 			for _, module in component.Modules do
 				if module.Children then
 					local visible = clickgui.Visible
-					--[[for _, v2 in self.Windows do
-						visible = visible or v2.Visible
-					end]]
 		
 					module.Children.Visible = (not visible or window.Visible) and module.Enabled
 				end
@@ -8082,25 +8035,24 @@ components = {
 		return component
 	end,
 }
-
 vape.Components = setmetatable(components, {
-	__newindex = function(_, index, callback)
-		for _, module in vape.Modules do
-			rawset(module, 'Create'..index, function(_, props)
-				return callback(props, module.Children, module)
-			end)
-		end
+        __newindex = function(_, index, callback)
+                for _, module in vape.Modules do
+                        rawset(module, 'Create'..index, function(_, props)
+                                return callback(props, module.Children, module)
+                        end)
+                end
 
-		if vape.Legit then
-			for _, module in vape.Legit.Modules do
-				rawset(module, 'Create'..index, function(_, props)
-					return callback(props, module.Children, module)
-				end)
-			end
-		end
+                if vape.Legit then
+                        for _, module in vape.Legit.Modules do
+                                rawset(module, 'Create'..index, function(_, props)
+                                        return callback(props, module.Children, module)
+                                end)
+                        end
+                end
 
-		rawset(components, index, callback)
-	end
+                rawset(components, index, callback)
+        end
 })
 
 vape:LoadGUI()

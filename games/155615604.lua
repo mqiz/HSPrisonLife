@@ -552,12 +552,10 @@ run(function()
 	vape:Clean(replicatedStorage.Killfeed.ChildAdded:Connect(function(obj)
 		local names = {}
 
-		-- killer
 		local start = obj.Name:find('@')
 		local endchar = obj.Name:find(')')
 		table.insert(names, obj.Name:sub(start + 1, endchar - 1))
 
-		-- victim
 		start = obj.Name:find('killed ') + 7
 		endchar = obj.Name:find(' ', start)
 		table.insert(names, obj.Name:sub(start, endchar - 1))
@@ -600,7 +598,6 @@ run(function()
 end)
 
 run(function()
-	-- https://github.com/J1ck/roblox-spring/blob/main/src/roblox-spring.luau
 	Spring.__index = Spring
 
 	function Spring.new(Properties)
@@ -1343,7 +1340,6 @@ run(function()
 	local AntiInvisible
 	local threads = {}
 	local whitelist = {
-		-- default roblox animations
 		['http://www.roblox.com/asset/?id=125750702'] = true,
 		['http://www.roblox.com/asset/?id=128777973'] = true,
 		['http://www.roblox.com/asset/?id=128853357'] = true,
@@ -1367,7 +1363,6 @@ run(function()
 		['http://www.roblox.com/asset/?id=182491277'] = true,
 		['http://www.roblox.com/asset/?id=182491368'] = true,
 		['http://www.roblox.com/asset/?id=182491423'] = true,
-		-- game animations
 		['rbxassetid://279227693'] = true,
 		['rbxassetid://279229192'] = true,
 		['rbxassetid://287112271'] = true,
@@ -3002,7 +2997,6 @@ run(function()
 						end
 					end))
 	
-					-- reimplementation of playsound to get rid of the bad error
 					oldplaysound = hookfunction(pl.PlaySound, function(sound)
 						local obj = debug.getupvalue(pl.Shoot, 1)
 						obj = obj and obj:FindFirstChild('Handle')
@@ -3664,7 +3658,6 @@ run(function()
 	local thealth, ttimer = 0, 0
 	local indi, indipart, indithread
 	
-	-- completely skidded from RIVALS
 	local function renderStepForLoop(startVal, endVal, increment, callback)
 		while true do
 			if endVal >= startVal then
@@ -3718,7 +3711,6 @@ run(function()
 			indithread = nil
 		end
 	
-		-- completely skidded from RIVALS
 		indithread = task.spawn(function()
 			local sign = math.sign(math.random() - 0.5)
 			renderStepForLoop(0, 100, 3, function(value)
@@ -3809,23 +3801,62 @@ end)
 run(function()
 	local HitSound
 	local Value
+	local Folder
 	local Volume
 	local PitchShift
-	local old, sounds = nil, {}
+	local soundFolder = 'hacksensev2/sounds'
+	local audioTypes = {flac = true, m4a = true, mp3 = true, ogg = true, wav = true}
+	local sounds, folderSounds = {}, {}
+	
+	if not isfolder(soundFolder) then
+		makefolder(soundFolder)
+	end
+	
+	local function listFolder()
+		local files = {}
+		if not isfolder(soundFolder) then
+			return files
+		end
+		for _, path in listfiles(soundFolder) do
+			local name = string.match(path, '[^/\\]+$')
+			if name and audioTypes[string.match(string.lower(name), '%.([a-z0-9]+)$') or ''] then
+				files[#files + 1] = name
+			end
+		end
+		table.sort(files)
+		return files
+	end
+	
+	local function refreshFolder()
+		local changed = false
+		for _, name in listFolder() do
+			if not table.find(Folder.List, name) then
+				table.insert(Folder.List, name)
+				table.insert(Folder.ListEnabled, name)
+				changed = true
+			end
+		end
+		if changed then
+			Folder:ChangeValue()
+		end
+	end
 	
 	HitSound = vape.Legit:CreateModule({
 		Name = 'HitSound',
 		Function = function(callback)
 			if callback then
+				refreshFolder()
 				local played
 				TracerHook:Add('HitSound', function(...)
 					local part = debug.getstack(4, 17)
 					if typeof(part) == 'Instance' then
 						for _, v in entitylib.List do
 							if part:IsDescendantOf(v.Character) and entitylib.isVulnerable(v, true) then
-								if #sounds > 0 and not played then
+								local pool = table.clone(sounds)
+								table.move(folderSounds, 1, #folderSounds, #pool + 1, pool)
+								if #pool > 0 and not played then
 									local sound = Instance.new('Sound')
-									sound.SoundId = sounds[math.random(1, #sounds)]
+									sound.SoundId = pool[math.random(1, #pool)]
 									sound.PlayOnRemove = true
 									sound.PlaybackSpeed = PitchShift.Enabled and 1 + ((0.5 - math.random()) / 10) or 1
 									sound.Volume = Volume.Value
@@ -3858,6 +3889,20 @@ run(function()
 			end
 		end
 	})
+	Folder = HitSound:CreateTextList({
+		Name = 'Folder',
+		Placeholder = 'file name in hacksensev2/sounds',
+		Function = function()
+			table.clear(folderSounds)
+			for _, name in Folder.ListEnabled do
+				local path = soundFolder..'/'..name
+				if isfile(path) then
+					folderSounds[#folderSounds + 1] = getcustomasset(path)
+				end
+			end
+		end
+	})
+	refreshFolder()
 	Volume = HitSound:CreateSlider({
 		Name = 'Volume',
 		Min = 0,
@@ -3868,28 +3913,70 @@ run(function()
 	PitchShift = HitSound:CreateToggle({
 		Name = 'Pitch Shift'
 	})
+	
 end)
 
 run(function()
 	local KillSound
 	local Value
+	local Folder
 	local Volume
 	local PitchShift
-	local old, sounds = nil, {}
+	local soundFolder = 'hacksensev2/sounds'
+	local audioTypes = {flac = true, m4a = true, mp3 = true, ogg = true, wav = true}
+	local sounds, folderSounds = {}, {}
+	
+	if not isfolder(soundFolder) then
+		makefolder(soundFolder)
+	end
+	
+	local function listFolder()
+		local files = {}
+		if not isfolder(soundFolder) then
+			return files
+		end
+		for _, path in listfiles(soundFolder) do
+			local name = string.match(path, '[^/\\]+$')
+			if name and audioTypes[string.match(string.lower(name), '%.([a-z0-9]+)$') or ''] then
+				files[#files + 1] = name
+			end
+		end
+		table.sort(files)
+		return files
+	end
+	
+	local function refreshFolder()
+		local changed = false
+		for _, name in listFolder() do
+			if not table.find(Folder.List, name) then
+				table.insert(Folder.List, name)
+				table.insert(Folder.ListEnabled, name)
+				changed = true
+			end
+		end
+		if changed then
+			Folder:ChangeValue()
+		end
+	end
 	
 	KillSound = vape.Legit:CreateModule({
 		Name = 'KillSound',
 		Function = function(callback)
 			if callback then
+				refreshFolder()
 				KillSound:Clean(vapeEvents.PlayerKill.Event:Connect(function(plr)
-					if plr == lplr.Name and #sounds > 0 then
-						local sound = Instance.new('Sound')
-						sound.SoundId = sounds[math.random(1, #sounds)]
-						sound.PlayOnRemove = true
-						sound.PlaybackSpeed = PitchShift.Enabled and 1 + ((0.5 - math.random()) / 10) or 1
-						sound.Volume = Volume.Value
-						sound.Parent = workspace
-						sound:Destroy()
+					if plr == lplr.Name then
+						local pool = table.clone(sounds)
+						table.move(folderSounds, 1, #folderSounds, #pool + 1, pool)
+						if #pool > 0 then
+							local sound = Instance.new('Sound')
+							sound.SoundId = pool[math.random(1, #pool)]
+							sound.PlayOnRemove = true
+							sound.PlaybackSpeed = PitchShift.Enabled and 1 + ((0.5 - math.random()) / 10) or 1
+							sound.Volume = Volume.Value
+							sound.Parent = workspace
+							sound:Destroy()
+						end
 					end
 				end))
 			end
@@ -3906,6 +3993,20 @@ run(function()
 			end
 		end
 	})
+	Folder = KillSound:CreateTextList({
+		Name = 'Folder',
+		Placeholder = 'file name in hacksensev2/sounds',
+		Function = function()
+			table.clear(folderSounds)
+			for _, name in Folder.ListEnabled do
+				local path = soundFolder..'/'..name
+				if isfile(path) then
+					folderSounds[#folderSounds + 1] = getcustomasset(path)
+				end
+			end
+		end
+	})
+	refreshFolder()
 	Volume = KillSound:CreateSlider({
 		Name = 'Volume',
 		Min = 0,
@@ -3916,6 +4017,7 @@ run(function()
 	PitchShift = KillSound:CreateToggle({
 		Name = 'Pitch Shift'
 	})
+	
 end)
 
 run(function()

@@ -5019,12 +5019,10 @@ run(function()
 				chair.Material = Enum.Material.SmoothPlastic
 				chair.Parent = workspace
 				movingsound = Instance.new('Sound')
-				--movingsound.SoundId = downloadVapeAsset('vape/assets/ChairRolling.mp3')
 				movingsound.Volume = 0.4
 				movingsound.Looped = true
 				movingsound.Parent = workspace
 				flyingsound = Instance.new('Sound')
-				--flyingsound.SoundId = downloadVapeAsset('vape/assets/ChairFlying.mp3')
 				flyingsound.Volume = 0.4
 				flyingsound.Looped = true
 				flyingsound.Parent = workspace
@@ -6259,32 +6257,6 @@ run(function()
 end)
 
 run(function()
-	--[[
-		Lua OTP Library https://github.com/tilkinsc/LuaOTP/
-		SpotAPI https://github.com/Aran404/SpotAPI
-	
-		MIT License
-	
-		Copyright (c) 2021 Cody Tilkins
-	
-		Permission is hereby granted, free of charge, to any person obtaining a copy
-		of this software and associated documentation files (the "Software"), to deal
-		in the Software without restriction, including without limitation the rights
-		to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-		copies of the Software, and to permit persons to whom the Software is
-		furnished to do so, subject to the following conditions:
-	
-		The above copyright notice and this permission notice shall be included in all
-		copies or substantial portions of the Software.
-	
-		THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-		IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-		FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-		AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-		LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-		OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-		SOFTWARE.
-	]]
 	
 	local Spotify
 	local SpotifyHandler = {Cache = {}}
@@ -9054,10 +9026,6 @@ run(function()
 end)
 
 run(function()
-	--[[
-		Grabbing an accurate count of the current framerate
-		Source: https://devforum.roblox.com/t/get-client-FPS-trough-a-script/282631
-	]]
 	local FPS
 	local label
 	
@@ -9340,49 +9308,101 @@ end)
 run(function()
 	local SongBeats
 	local List
+	local Folder
 	local FOV
 	local FOVValue = {}
 	local Volume
+	local soundFolder = 'hacksensev2/sounds'
+	local audioTypes = {flac = true, m4a = true, mp3 = true, ogg = true, wav = true}
 	local alreadypicked = {}
 	local beattick = os.clock()
 	local oldfov, songobj, songbpm, songtween
 	
+	if not isfolder(soundFolder) then
+		makefolder(soundFolder)
+	end
+	
+	local function listFolder()
+		local files = {}
+		if not isfolder(soundFolder) then
+			return files
+		end
+		for _, path in listfiles(soundFolder) do
+			local name = string.match(path, '[^/\\]+$')
+			if name and audioTypes[string.match(string.lower(name), '%.([a-z0-9]+)$') or ''] then
+				files[#files + 1] = name
+			end
+		end
+		table.sort(files)
+		return files
+	end
+	
+	local function refreshFolder()
+		local changed = false
+		for _, name in listFolder() do
+			if not table.find(Folder.List, name) then
+				table.insert(Folder.List, name)
+				table.insert(Folder.ListEnabled, name)
+				changed = true
+			end
+		end
+		if changed then
+			Folder:ChangeValue()
+		end
+	end
+	
 	local function choosesong()
-		local list = List.ListEnabled
-		if #alreadypicked >= #list then
+		local combined = {}
+		for _, v in List.ListEnabled do
+			combined[#combined + 1] = v
+		end
+		for _, v in Folder.ListEnabled do
+			local path = soundFolder..'/'..v
+			if isfile(path) and not table.find(combined, path) then
+				combined[#combined + 1] = path
+			end
+		end
+		if #alreadypicked >= #combined then
 			table.clear(alreadypicked)
 		end
 	
-		if #list <= 0 then
+		if #combined <= 0 then
 			notif('SongBeats', 'no songs', 10)
 			SongBeats:Toggle()
 			return
 		end
 	
-		local chosensong = list[math.random(1, #list)]
-		if #list > 1 and table.find(alreadypicked, chosensong) then
+		local chosensong = combined[math.random(1, #combined)]
+		if #combined > 1 and table.find(alreadypicked, chosensong) then
 			repeat
 				task.wait()
-				chosensong = list[math.random(1, #list)]
+				chosensong = combined[math.random(1, #combined)]
 			until not table.find(alreadypicked, chosensong) or not SongBeats.Enabled
 		end
 		if not SongBeats.Enabled then return end
 	
-		local split = chosensong:split('/')
-		if not isfile(split[1]) then
-			notif('SongBeats', 'Missing song ('..split[1]..')', 10)
+		local songpath, bpmvalue, startvalue = chosensong, nil, nil
+		if not isfile(chosensong) then
+			local split = chosensong:split('/')
+			songpath = split[1]
+			bpmvalue = tonumber(split[2])
+			startvalue = tonumber(split[3])
+		end
+	
+		if not isfile(songpath) then
+			notif('SongBeats', 'Missing song ('..songpath..')', 10)
 			SongBeats:Toggle()
 			return
 		end
 	
-		songobj.SoundId = getcustomasset(split[1])
+		songobj.SoundId = getcustomasset(songpath)
 		repeat
 			task.wait()
 		until songobj.IsLoaded or not SongBeats.Enabled
 	
 		if SongBeats.Enabled then
-			beattick = os.clock() + (tonumber(split[3]) or 0)
-			songbpm = 60 / (tonumber(split[2]) or 50)
+			beattick = os.clock() + (startvalue or 0)
+			songbpm = 60 / (bpmvalue or 50)
 			songobj:Play()
 		end
 	end
@@ -9391,6 +9411,7 @@ run(function()
 		Name = 'Song Beats',
 		Function = function(callback)
 			if callback then
+				refreshFolder()
 				songobj = Instance.new('Sound')
 				songobj.Volume = Volume.Value / 100
 				songobj.Parent = workspace
@@ -9436,6 +9457,11 @@ run(function()
 		Name = 'Songs',
 		Placeholder = 'filepath/bpm/start'
 	})
+	Folder = SongBeats:CreateTextList({
+		Name = 'Folder',
+		Placeholder = 'file name in hacksensev2/sounds'
+	})
+	refreshFolder()
 	FOV = SongBeats:CreateToggle({
 		Name = 'Beat FOV',
 		Function = function(callback)
@@ -9469,6 +9495,7 @@ run(function()
 		Default = 100,
 		Suffix = '%'
 	})
+	
 end)
 
 run(function()

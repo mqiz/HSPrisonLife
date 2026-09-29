@@ -1,7 +1,6 @@
 local AntiInvisible
 local threads = {}
 local whitelist = {
-	-- default roblox animations
 	['http://www.roblox.com/asset/?id=125750702'] = true,
 	['http://www.roblox.com/asset/?id=128777973'] = true,
 	['http://www.roblox.com/asset/?id=128853357'] = true,
@@ -25,7 +24,6 @@ local whitelist = {
 	['http://www.roblox.com/asset/?id=182491277'] = true,
 	['http://www.roblox.com/asset/?id=182491368'] = true,
 	['http://www.roblox.com/asset/?id=182491423'] = true,
-	-- game animations
 	['rbxassetid://279227693'] = true,
 	['rbxassetid://279229192'] = true,
 	['rbxassetid://287112271'] = true,

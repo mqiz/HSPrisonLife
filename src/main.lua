@@ -84,7 +84,7 @@ end
 if not isfile('hacksensev2/profiles/gui.txt') then
 	writefile('hacksensev2/profiles/gui.txt', 'new')
 end
-local gui = 'new'--readfile('hacksensev2/profiles/gui.txt')
+local gui = 'new'
 
 if not isfolder('hacksensev2/assets/'..gui) then
 	makefolder('hacksensev2/assets/'..gui)

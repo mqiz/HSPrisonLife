@@ -52,7 +52,6 @@ AutoReload = vape.Categories.Utility:CreateModule({
 					end
 				end))
 
-				-- reimplementation of playsound to get rid of the bad error
 				oldplaysound = hookfunction(pl.PlaySound, function(sound)
 					local obj = debug.getupvalue(pl.Shoot, 1)
 					obj = obj and obj:FindFirstChild('Handle')

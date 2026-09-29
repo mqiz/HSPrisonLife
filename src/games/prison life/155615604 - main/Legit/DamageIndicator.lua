@@ -6,7 +6,6 @@ local tent, lent
 local thealth, ttimer = 0, 0
 local indi, indipart, indithread
 
--- completely skidded from RIVALS
 local function renderStepForLoop(startVal, endVal, increment, callback)
 	while true do
 		if endVal >= startVal then
@@ -60,7 +59,6 @@ local function createIndicator(damage, pos)
 		indithread = nil
 	end
 
-	-- completely skidded from RIVALS
 	indithread = task.spawn(function()
 		local sign = math.sign(math.random() - 0.5)
 		renderStepForLoop(0, 100, 3, function(value)

@@ -552,12 +552,10 @@ run(function()
 	vape:Clean(replicatedStorage.Killfeed.ChildAdded:Connect(function(obj)
 		local names = {}
 
-		-- killer
 		local start = obj.Name:find('@')
 		local endchar = obj.Name:find(')')
 		table.insert(names, obj.Name:sub(start + 1, endchar - 1))
 
-		-- victim
 		start = obj.Name:find('killed ') + 7
 		endchar = obj.Name:find(' ', start)
 		table.insert(names, obj.Name:sub(start, endchar - 1))
@@ -600,7 +598,6 @@ run(function()
 end)
 
 run(function()
-	-- https://github.com/J1ck/roblox-spring/blob/main/src/roblox-spring.luau
 	Spring.__index = Spring
 
 	function Spring.new(Properties)
