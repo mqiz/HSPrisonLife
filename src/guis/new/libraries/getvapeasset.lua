@@ -55,6 +55,8 @@ do
                 ['hacksensev2/assets/new/textgui.png'] = 'rbxassetid://99438663817412',
                 ['hacksensev2/assets/new/theme.png'] = 'rbxassetid://111525258317113',
                 ['hacksensev2/assets/new/utility.png'] = 'rbxassetid://108303206513893',
+                ['hacksensev2/assets/new/v2.png'] = '',
+                ['hacksensev2/assets/new/v2mini.png'] = '',
                 ['hacksensev2/assets/new/vape.png'] = '',
                 ['hacksensev2/assets/new/vapelogo.png'] = '',
                 ['hacksensev2/assets/new/vapelogomini.png'] = '',

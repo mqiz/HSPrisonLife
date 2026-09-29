@@ -5,7 +5,7 @@ local ColorMode
 local Scale
 local Shadow
 local Gradient
-local GradientV4
+local GradientV2
 local Animations
 local Watermark
 local Background
@@ -94,12 +94,12 @@ Gradient = TextGUI:CreateToggle({
         Name = 'Gradient',
         Tooltip = 'Renders a gradient',
         Function = function(callback)
-                GradientV4.Object.Visible = callback
+                GradientV2.Object.Visible = callback
                 vape:UpdateTextGUI()
         end
 })
-GradientV4 = TextGUI:CreateToggle({
-        Name = 'V4 Gradient',
+GradientV2 = TextGUI:CreateToggle({
+        Name = 'V2 Gradient',
         Function = function()
                 vape:UpdateTextGUI()
         end,
@@ -227,10 +227,19 @@ Logo.BackgroundTransparency = 1
 Logo.BorderSizePixel = 0
 Logo.Image = getvapeasset('hacksensev2/assets/new/vapelogo.png')
 Logo.Name = 'Logo'
-Logo.Position = UDim2.new(1, -45, 0, 3)
+Logo.Position = UDim2.new(1, -102, 0, 3)
 Logo.Size = UDim2.fromOffset(41, 24)
 Logo.Visible = false
 Logo.Parent = TextGUI.Children
+local LogoV2 = Instance.new('ImageLabel')
+LogoV2.BackgroundColor3 = Color3.new()
+LogoV2.BackgroundTransparency = 1
+LogoV2.BorderSizePixel = 0
+LogoV2.Image = getvapeasset('hacksensev2/assets/new/v2.png')
+LogoV2.Name = 'Logo2'
+LogoV2.Position = UDim2.new(1, -1, 0, 0)
+LogoV2.Size = UDim2.fromOffset(35, 24)
+LogoV2.Parent = Logo
 local LogoShadow = Logo:Clone()
 LogoShadow.ImageColor3 = Color3.new()
 LogoShadow.ImageTransparency = 0.65
@@ -238,9 +247,15 @@ LogoShadow.Position = UDim2.fromOffset(1, 1)
 LogoShadow.Visible = true
 LogoShadow.ZIndex = 0
 LogoShadow.Parent = Logo
+LogoShadow.Logo2.ImageColor3 = Color3.new()
+LogoShadow.Logo2.ImageTransparency = 0.65
+LogoShadow.Logo2.ZIndex = 0
 local LogoGradient = Instance.new('UIGradient')
 LogoGradient.Rotation = 90
 LogoGradient.Parent = Logo
+local LogoGradient2 = Instance.new('UIGradient')
+LogoGradient2.Rotation = 90
+LogoGradient2.Parent = LogoV2
 local LabelCustom = Instance.new('TextLabel')
 LabelCustom.BackgroundTransparency = 1
 LabelCustom.BorderSizePixel = 0
@@ -483,7 +498,7 @@ function TextGUI:UpdateColor(hue, sat, val, default)
                 ColorSequenceKeypoint.new(0, Color3.fromHSV(hue, sat, val)),
                 ColorSequenceKeypoint.new(1, Gradient.Enabled and Color3.fromHSV(vape:Color((hue - 0.075) % 1)) or Color3.fromHSV(hue, sat, val))
         })
-        LogoGradient2.Color = Gradient.Enabled and GradientV4.Enabled and LogoGradient.Color or ColorSequence.new({
+        LogoGradient2.Color = Gradient.Enabled and GradientV2.Enabled and LogoGradient.Color or ColorSequence.new({
                 ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)),
                 ColorSequenceKeypoint.new(1, Color3.new(1, 1, 1))
         })

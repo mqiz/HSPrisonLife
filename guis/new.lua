@@ -172,6 +172,8 @@ do
                 ['hacksensev2/assets/new/textgui.png'] = 'rbxassetid://99438663817412',
                 ['hacksensev2/assets/new/theme.png'] = 'rbxassetid://111525258317113',
                 ['hacksensev2/assets/new/utility.png'] = 'rbxassetid://108303206513893',
+                ['hacksensev2/assets/new/v2.png'] = '',
+                ['hacksensev2/assets/new/v2mini.png'] = '',
                 ['hacksensev2/assets/new/vape.png'] = '',
                 ['hacksensev2/assets/new/vapelogo.png'] = '',
                 ['hacksensev2/assets/new/vapelogomini.png'] = '',
@@ -1331,7 +1333,7 @@ function vape:LoadGUI()
 		local Scale
 		local Shadow
 		local Gradient
-		local GradientV4
+		local GradientV2
 		local Animations
 		local Watermark
 		local Background
@@ -1420,12 +1422,12 @@ function vape:LoadGUI()
 		        Name = 'Gradient',
 		        Tooltip = 'Renders a gradient',
 		        Function = function(callback)
-		                GradientV4.Object.Visible = callback
+		                GradientV2.Object.Visible = callback
 		                vape:UpdateTextGUI()
 		        end
 		})
-		GradientV4 = TextGUI:CreateToggle({
-		        Name = 'V4 Gradient',
+		GradientV2 = TextGUI:CreateToggle({
+		        Name = 'V2 Gradient',
 		        Function = function()
 		                vape:UpdateTextGUI()
 		        end,
@@ -1553,10 +1555,19 @@ function vape:LoadGUI()
 		Logo.BorderSizePixel = 0
 		Logo.Image = getvapeasset('hacksensev2/assets/new/vapelogo.png')
 		Logo.Name = 'Logo'
-		Logo.Position = UDim2.new(1, -45, 0, 3)
+		Logo.Position = UDim2.new(1, -102, 0, 3)
 		Logo.Size = UDim2.fromOffset(41, 24)
 		Logo.Visible = false
 		Logo.Parent = TextGUI.Children
+		local LogoV2 = Instance.new('ImageLabel')
+		LogoV2.BackgroundColor3 = Color3.new()
+		LogoV2.BackgroundTransparency = 1
+		LogoV2.BorderSizePixel = 0
+		LogoV2.Image = getvapeasset('hacksensev2/assets/new/v2.png')
+		LogoV2.Name = 'Logo2'
+		LogoV2.Position = UDim2.new(1, -1, 0, 0)
+		LogoV2.Size = UDim2.fromOffset(35, 24)
+		LogoV2.Parent = Logo
 		local LogoShadow = Logo:Clone()
 		LogoShadow.ImageColor3 = Color3.new()
 		LogoShadow.ImageTransparency = 0.65
@@ -1564,9 +1575,15 @@ function vape:LoadGUI()
 		LogoShadow.Visible = true
 		LogoShadow.ZIndex = 0
 		LogoShadow.Parent = Logo
+		LogoShadow.Logo2.ImageColor3 = Color3.new()
+		LogoShadow.Logo2.ImageTransparency = 0.65
+		LogoShadow.Logo2.ZIndex = 0
 		local LogoGradient = Instance.new('UIGradient')
 		LogoGradient.Rotation = 90
 		LogoGradient.Parent = Logo
+		local LogoGradient2 = Instance.new('UIGradient')
+		LogoGradient2.Rotation = 90
+		LogoGradient2.Parent = LogoV2
 		local LabelCustom = Instance.new('TextLabel')
 		LabelCustom.BackgroundTransparency = 1
 		LabelCustom.BorderSizePixel = 0
@@ -1809,7 +1826,7 @@ function vape:LoadGUI()
 		                ColorSequenceKeypoint.new(0, Color3.fromHSV(hue, sat, val)),
 		                ColorSequenceKeypoint.new(1, Gradient.Enabled and Color3.fromHSV(vape:Color((hue - 0.075) % 1)) or Color3.fromHSV(hue, sat, val))
 		        })
-		        LogoGradient2.Color = Gradient.Enabled and GradientV4.Enabled and LogoGradient.Color or ColorSequence.new({
+		        LogoGradient2.Color = Gradient.Enabled and GradientV2.Enabled and LogoGradient.Color or ColorSequence.new({
 		                ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)),
 		                ColorSequenceKeypoint.new(1, Color3.new(1, 1, 1))
 		        })
@@ -4355,6 +4372,13 @@ components = {
 		logo.Position = UDim2.fromOffset(12, 11)
 		logo.Size = UDim2.fromOffset(27, 16)
 		logo.Parent = window
+		local v2logo = Instance.new('ImageLabel')
+		v2logo.BackgroundTransparency = 1
+		v2logo.Image = getvapeasset('hacksensev2/assets/new/v2mini.png')
+		v2logo.Name = 'V2Logo'
+		v2logo.Position = UDim2.new(1, -1, 0, 0)
+		v2logo.Size = UDim2.fromOffset(23, 16)
+		v2logo.Parent = logo
 		local children = Instance.new('Frame')
 		children.BackgroundTransparency = 1
 		children.Position = UDim2.fromOffset(0, 37)
@@ -4397,6 +4421,8 @@ components = {
 		component.Settings = settingspane
 		
 		function component:Color(hue, sat, val, isRainbow)
+		        v2logo.ImageColor3 = Color3.fromHSV(hue, sat, val)
+		
 		        for _, button in self.Buttons do
 		                if button.Enabled then
 		                        button.Object.TextColor3 = isRainbow and Color3.fromHSV(vape:Color((hue - (button.Index * 0.025)) % 1)) or Color3.fromHSV(hue, sat, val)
@@ -6434,7 +6460,7 @@ components = {
 		legiticon.Position = UDim2.fromOffset(8, 11)
 		legiticon.Size = UDim2.fromOffset(29, 16)
 		legiticon.Parent = search
-		listenProperty(vape.Categories.Main.Object.VapeLogo, legiticon, 'ImageColor3', legiticon)
+		listenProperty(vape.Categories.Main.Object.VapeLogo.V2Logo, legiticon, 'ImageColor3', legiticon)
 		local legitdivider = Instance.new('Frame')
 		legitdivider.BackgroundColor3 = color.Light(uipallet.Main, 0.14)
 		legitdivider.BorderSizePixel = 0

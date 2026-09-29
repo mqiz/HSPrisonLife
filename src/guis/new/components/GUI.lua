@@ -22,6 +22,13 @@ logo.Name = 'VapeLogo'
 logo.Position = UDim2.fromOffset(12, 11)
 logo.Size = UDim2.fromOffset(27, 16)
 logo.Parent = window
+local v2logo = Instance.new('ImageLabel')
+v2logo.BackgroundTransparency = 1
+v2logo.Image = getvapeasset('hacksensev2/assets/new/v2mini.png')
+v2logo.Name = 'V2Logo'
+v2logo.Position = UDim2.new(1, -1, 0, 0)
+v2logo.Size = UDim2.fromOffset(23, 16)
+v2logo.Parent = logo
 local children = Instance.new('Frame')
 children.BackgroundTransparency = 1
 children.Position = UDim2.fromOffset(0, 37)
@@ -64,6 +71,8 @@ local settingspane = components.SettingsPane({
 component.Settings = settingspane
 
 function component:Color(hue, sat, val, isRainbow)
+        v2logo.ImageColor3 = Color3.fromHSV(hue, sat, val)
+
         for _, button in self.Buttons do
                 if button.Enabled then
                         button.Object.TextColor3 = isRainbow and Color3.fromHSV(vape:Color((hue - (button.Index * 0.025)) % 1)) or Color3.fromHSV(hue, sat, val)
