@@ -42,7 +42,7 @@ if not shared.VapeDeveloper then
                 return game:HttpGet('https://github.com/mqiz/HSPrisonLife')
         end)
 
-        local assetVer = '2'
+        local assetVer = '3'
         local commit = subbed:find('currentOid')
         commit = commit and subbed:sub(commit + 13, commit + 52) or nil
         commit = commit and #commit == 40 and commit or 'main'
