@@ -2,7 +2,7 @@
 <h2 align="center">
   HackSense Prison Life
   <br/>
-  A lazy vape fork made for prison life.
+  A lazy vape fork originally only for prison life
 </h2>
 
 ## Contacts
@@ -37,4 +37,6 @@ If its not the supposed utility at fault, please try some troubleshooting steps.
 <br/>
 [Vernumerator](https://devforum.roblox.com/t/predict-projectile-ballistics-including-gravity-and-motion/1842434) - Projectile prediction for Roblox
 <br/>
-[NotoriousBypasser](https://github.com/mqiz) - For creation and maintaining of HackSensePrisonLife
+[NotoriousBypasser](https://github.com/mqiz) - For creation and maintaining of HackSenseV2
+<br/>
+[Rusty](https://github.com/0rusty) - For creation and maintaining of HackSenseV2
