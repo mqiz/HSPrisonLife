@@ -26,7 +26,7 @@ Half of the time its usually the scripting utility at fault, please make sure th
 If its not the supposed utility at fault, please try some troubleshooting steps.
 1. Deleting the hacksensev2 folder (WITH THE GAME CLOSED).
 2. Making sure you have connection to the main loadstring.
-3. Ensuring no external script is conflicting with vape.
+3. Ensuring no external script is conflicting with hacksense.
 
 ## Developers & Credits
 [7GrandDad](https://github.com/7GrandDadPGN) - Lead maintainer of the main project - vaperoblox on Discord
